@@ -33,11 +33,11 @@ RUN git clone https://github.com/andrire/RNNASIP-pulpissimo.git
 
 # pulp sdk
 
-WORKDIR /workspace/RNNASIP/vp/
+WORKDIR /workspace/RNNASIP/
 
 ## dependencies
 
-## these probobably don't work (?)
+## these probably don't work (?)
 #RUN yum install -y python3 build-essential git libftdi-dev libftdi1 doxygen python3-pip libsdl2-dev curl cmake libusb-1.0-0-dev scons gtkwave libsndfile1-dev rsync autoconf automake texinfo libtool pkg-config libsdl2-ttf-dev
 #RUN pip install argcomplete pyelftools
 
@@ -46,31 +46,41 @@ WORKDIR /workspace/RNNASIP/vp/
 # Enable pip...
 RUN yum install -y epel-release
 
-RUN yum install -y python2 python36 python36-devel python36-setuptools gawk texinfo gmp-devel mpfr-devel libmpc-devel swig libjpeg-turbo-devel redhat-lsb-core doxygen python-sphinx sox GraphicsMagick-devel ImageMagick-devel SDL2-devel perl-Switch libftdi-devel cmake
-RUN easy_install-3.6 pip
-RUN python3 -m pip install --upgrade pip
-RUN python3 -m pip install artifactory twisted prettytable sqlalchemy pyelftools openpyxl xlsxwriter pyyaml numpy configparser pyvcd
+RUN yum install -y python2 python36 python36-devel python36-setuptools gawk texinfo gmp-devel mpfr-devel libmpc-devel swig libjpeg-turbo-devel redhat-lsb-core doxygen python-sphinx sox GraphicsMagick-devel ImageMagick-devel SDL2-devel perl-Switch libftdi-devel cmake3 python36-pip cmake cmake3 scons python2-pip ImageMagick ImageMagick-c++-devel GraphicsMagick-c++-devel
 
-#RUN python2 -m pip install configparser
-#RUN python2 -m pip install --upgrade pip
+RUN rm /usr/bin/cmake
+RUN ln /usr/bin/cmake3 /usr/bin/cmake 
+
+RUN easy_install-3.6 pip
+RUN python2 -m pip install --trusted-host pypi.python.org configparser2
+RUN python3 -m pip install --upgrade pip
+RUN python3 -m pip install artifactory twisted prettytable sqlalchemy pyelftools openpyxl xlsxwriter pyyaml numpy configparser pyvcd scons Sphinx
+
+# do the thing to switch scons to use python3
+RUN sed -i "s|#!/usr/bin/python2|#!/usr/bin/python3|" /usr/local/bin/scons
 
 RUN git clone https://github.com/pulp-platform/pulp-sdk.git
-WORKDIR /workspace/RNNASIP/vp/pulp-sdk/
+WORKDIR /workspace/RNNASIP/pulp-sdk/
 
 RUN git checkout tags/2019.10.01
 
-# This causes merge conflicts. What's even the point of checking out the tag...
-#RUN git config --global user.email "docker@centos.com"
-#RUN git config --global user.name "dockermachine"
-#RUN git pull origin main
+ENV PULP_RISCV_GCC_TOOLCHAIN="/opt/riscv"
+ENV VSIM_PATH="/workspace/RNNASIP/vp/RNNASIP-pulpissimo/sim"
 
-ENV PULP_RISCV_GCC_TOOLCHAIN="/opt/riscv/"
-# set env for VSIM_PATH (supposedly it's the pulpissimo repo's root)
-ENV VSIM_PATH="/workspace/RNNASIP/vp/RNNASIP-pulpissimo/sim/"
+# each RUN command runs in a different shell, so these need to be run all at once.
+RUN source configs/pulpissimo_rnnext.sh && source configs/platform-gvsoc.sh && make pulp-tools && sed -i "s|git@github.com:GreenWaves-Technologies/pmsis_api.git|https://github.com/GreenWaves-Technologies/pmsis_api.git|" /workspace/RNNASIP/pulp-sdk/project.cfg && make all && echo "export PULP_RISCV_GCC_TOOLCHAIN=$PULP_RISCV_GCC_TOOLCHAIN" >> sourceme.sh
 
-RUN source configs/pulpissimo_rnnext.sh
-RUN source configs/platform-gvsoc.sh
-RUN make all
-RUN echo "export PULP_RISCV_GCC_TOOLCHAIN=$PULP_RISCV_GCC_TOOLCHAIN" >> sourceme.sh
+# when running stuff use this first, followed by && //whatever needs to be run
+# RUN source ${PULP_PROJECT_HOME}/configs/pulpissimo_rnnext.sh && source ${PULP_PROJECT_HOME}/configs/platfom-gvsoc.sh && source ${PULP_PROJECT_HOME}/sourceme.sh
 
-CMD ["/bin/bash"]
+WORKDIR /workspace/
+ENV PULP_PROJECT_HOME="/workspace/RNNASIP/pulp-sdk"
+
+
+RUN git clone https://github.com/pulp-platform/pulp-rt-examples.git
+WORKDIR /workspace/pulp-rt-examples/hello
+
+RUN source ${PULP_PROJECT_HOME}/configs/pulpissimo_rnnext.sh && source ${PULP_PROJECT_HOME}/configs/platform-gvsoc.sh && source ${PULP_PROJECT_HOME}/sourceme.sh && make conf && make clean all run
+# hello should be printed to the console...
+
+#CMD ["/bin/bash"]

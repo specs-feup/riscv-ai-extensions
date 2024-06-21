@@ -1,1 +1,1 @@
-docker build -t "rnnasip:latest" .
+docker build --progress=plain -t "rnnasip-final:latest" . 

@@ -1,1 +1,1 @@
-docker run -it --name rnnasip rnnasip:latest /bin/bash -c "echo 'Container Started'; /bin/bash"
+docker run -it --name rnnasip rnnasip-final:latest /bin/bash -c "echo 'Container Started'; /bin/bash"
