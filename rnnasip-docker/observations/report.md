@@ -3,22 +3,22 @@
 ## Observations
 
 - pulp-sdk must be cloned NOT inside vp folder (as a sibling to vp)
-- pmsis must be corrected to have https://
 
-- pulp-sdk requirements must be met:
-    `yum install git python36-pip python36-devel gawk texinfo gmp-devel mpfr-devel libmpc-devel swig libjpeg-turbo-devel redhat-lsb-core doxygen python-sphinx sox GraphicsMagick-devel ImageMagick-devel SDL2-devel perl-Switch libftdi-devel cmake cmake3 scons`
+- python2's pip must be installed `yum install python2-pip`
+- instead of `python2 -m pip install configparser` use due to migrated website `python2 -m pip install --trusted-host pypi.python.org configparser2`
+- scons must be set to use python3 by editing its script at `/usr/bin/scons`
 
-- install python2 pip (`yum install python2-pip`)
-- instead of `python2 -m pip install configparser` use `python2 -m pip install --trusted-host pypi.python.org configparser2` (?)
-- edit scons to use python3 instead (?) `/usr/bin/scons`
-- install python3's scons package (?) `python3 -m pip install scons`
-- install python3's Sphinx package (?) `python3 -m pip install Sphinx`
+## Undocumented Pulp SDK Requirements
 
-- install Magick++ `yum install ImageMagick ImageMagick-c++-devel GraphicsMagick-c++-devel`
-
-- clone whatever we want to run to the workspace directory and run as usual
+- Magick++ `yum install ImageMagick ImageMagick-c++-devel GraphicsMagick-c++-devel`
+- Due to multiple versions of pip being used, `python3 -m pip install` and `python2 -m pip install` are preferred to pip3 or pip2  
+- python3's Sphinx package `python3 -m pip install Sphinx`
 
 ## Errors
+
+### Deprecated https link for dependency
+
+- pmsis_api package must be corrected to have https:// on file `/workspace/RNNASIP/pulp-sdk/project.cfg`
 
 ### config_tree referenced before assignment
 ```

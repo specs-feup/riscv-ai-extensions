@@ -9,7 +9,6 @@ RUN yum install -y git autoconf automake libmpc-devel mpfr-devel gmp-devel gawk 
 
 WORKDIR /workspace/
 
-
 RUN git clone https://github.com/andrire/RNNASIP.git
 
 WORKDIR /workspace/RNNASIP/vp/
@@ -37,15 +36,8 @@ WORKDIR /workspace/RNNASIP/
 
 ## dependencies
 
-## these probably don't work (?)
-#RUN yum install -y python3 build-essential git libftdi-dev libftdi1 doxygen python3-pip libsdl2-dev curl cmake libusb-1.0-0-dev scons gtkwave libsndfile1-dev rsync autoconf automake texinfo libtool pkg-config libsdl2-ttf-dev
-#RUN pip install argcomplete pyelftools
-
-## instead use these
-
 # Enable pip...
 RUN yum install -y epel-release
-
 RUN yum install -y python2 python36 python36-devel python36-setuptools gawk texinfo gmp-devel mpfr-devel libmpc-devel swig libjpeg-turbo-devel redhat-lsb-core doxygen python-sphinx sox GraphicsMagick-devel ImageMagick-devel SDL2-devel perl-Switch libftdi-devel cmake3 python36-pip cmake cmake3 scons python2-pip ImageMagick ImageMagick-c++-devel GraphicsMagick-c++-devel
 
 RUN rm /usr/bin/cmake
@@ -70,17 +62,30 @@ ENV VSIM_PATH="/workspace/RNNASIP/vp/RNNASIP-pulpissimo/sim"
 # each RUN command runs in a different shell, so these need to be run all at once.
 RUN source configs/pulpissimo_rnnext.sh && source configs/platform-gvsoc.sh && make pulp-tools && sed -i "s|git@github.com:GreenWaves-Technologies/pmsis_api.git|https://github.com/GreenWaves-Technologies/pmsis_api.git|" /workspace/RNNASIP/pulp-sdk/project.cfg && make all && echo "export PULP_RISCV_GCC_TOOLCHAIN=$PULP_RISCV_GCC_TOOLCHAIN" >> sourceme.sh
 
-# when running stuff use this first, followed by && //whatever needs to be run
-# RUN source ${PULP_PROJECT_HOME}/configs/pulpissimo_rnnext.sh && source ${PULP_PROJECT_HOME}/configs/platfom-gvsoc.sh && source ${PULP_PROJECT_HOME}/sourceme.sh
-
 WORKDIR /workspace/
 ENV PULP_PROJECT_HOME="/workspace/RNNASIP/pulp-sdk"
 
+# !!!!!!!!!!!!!
+# when running stuff use this first, followed by && <whatever needs to be run>
+# RUN source ${PULP_PROJECT_HOME}/configs/pulpissimo_rnnext.sh && source ${PULP_PROJECT_HOME}/configs/platfom-gvsoc.sh && source ${PULP_PROJECT_HOME}/sourceme.sh
+# !!!!!!!!!!!!!
 
-RUN git clone https://github.com/pulp-platform/pulp-rt-examples.git
-WORKDIR /workspace/pulp-rt-examples/hello
+# -------------------- test SDK (standard pulp sdk, not RNNASIP) --------------------
+# RUN git clone https://github.com/pulp-platform/pulp-rt-examples.git
+# WORKDIR /workspace/pulp-rt-examples/hello
 
-RUN source ${PULP_PROJECT_HOME}/configs/pulpissimo_rnnext.sh && source ${PULP_PROJECT_HOME}/configs/platform-gvsoc.sh && source ${PULP_PROJECT_HOME}/sourceme.sh && make conf && make clean all run
+#RUN source ${PULP_PROJECT_HOME}/configs/pulpissimo_rnnext.sh && source ${PULP_PROJECT_HOME}/configs/platform-gvsoc.sh && source ${PULP_PROJECT_HOME}/sourceme.sh && make conf && make clean all run
 # hello should be printed to the console...
 
-#CMD ["/bin/bash"]
+# -------------------------------------------------------------------------------------
+
+
+# -------------------- test RNNASIP extensions --------------------
+
+WORKDIR /workspace/RNNASIP/sourcecode/Basic_Kernels/
+RUN source ${PULP_PROJECT_HOME}/configs/pulpissimo_rnnext.sh && source ${PULP_PROJECT_HOME}/configs/platform-gvsoc.sh && source ${PULP_PROJECT_HOME}/sourceme.sh && make conf && make clean all run
+
+WORKDIR /workspace/RNNASIP/sourcecode/rnnSampleCode/
+RUN source ${PULP_PROJECT_HOME}/configs/pulpissimo_rnnext.sh && source ${PULP_PROJECT_HOME}/configs/platform-gvsoc.sh && source ${PULP_PROJECT_HOME}/sourceme.sh && make conf && make clean all run
+
+# ------------------------------------------------------------------
