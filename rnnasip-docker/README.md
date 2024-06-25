@@ -26,4 +26,4 @@ It also supports the XpulpV2 non-standard ISA extension, which allows for:
 ## Custom Instruction Test
 
 A test of the RNNASIP custom instruction (XpulpV2's hardware loops, MAC and packed SIMD instructions) is run automatically when building the container. They can be found on the following path inside the container: `/workspace/RNNASIP/sourcecode/rnnSampleCode/test.c`.
-This test uses the default RTL simulator preconfigured by RNNASIP, and (utilizes / is built with) all extensions mentioned above.
+This test uses the default cycle-accurate simulator preconfigured by RNNASIP ([GVSOC](https://github.com/gvsoc/gvsoc)), and (utilizes / is built with) all extensions mentioned above.
