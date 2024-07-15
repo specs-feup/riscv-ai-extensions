@@ -1,1 +1,1 @@
-docker build --progress=plain -t "xheep:latest" . 
+docker build --progress=plain -t "xheep:latest" .
