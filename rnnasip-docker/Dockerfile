@@ -40,19 +40,23 @@ WORKDIR /workspace/RNNASIP/
 
 ## dependencies
 
-# Enable pip...
+### Enable pip...
 RUN yum install -y epel-release
 RUN yum install -y python2 python36 python36-devel python36-setuptools gawk texinfo gmp-devel mpfr-devel libmpc-devel swig libjpeg-turbo-devel redhat-lsb-core doxygen python-sphinx sox GraphicsMagick-devel ImageMagick-devel SDL2-devel perl-Switch libftdi-devel cmake3 python36-pip cmake cmake3 scons python2-pip ImageMagick ImageMagick-c++-devel GraphicsMagick-c++-devel
 
+### Make cmake3 the default cmake version
 RUN rm /usr/bin/cmake
 RUN ln /usr/bin/cmake3 /usr/bin/cmake 
 
 RUN easy_install-3.6 pip
+
+### "--trusted-host pypi.python.org" is necessary because this is old and deprecated
 RUN python2 -m pip install --trusted-host pypi.python.org configparser2
+
 RUN python3 -m pip install --upgrade pip
 RUN python3 -m pip install artifactory twisted prettytable sqlalchemy pyelftools openpyxl xlsxwriter pyyaml numpy configparser pyvcd scons Sphinx
 
-# do the thing to switch scons to use python3
+# force scons to use python3
 RUN sed -i "s|#!/usr/bin/python2|#!/usr/bin/python3|" /usr/local/bin/scons
 
 RUN git clone https://github.com/pulp-platform/pulp-sdk.git
@@ -63,14 +67,15 @@ RUN git checkout tags/2019.10.01
 ENV PULP_RISCV_GCC_TOOLCHAIN="/opt/riscv"
 ENV VSIM_PATH="/workspace/RNNASIP/vp/RNNASIP-pulpissimo/sim"
 
-# each RUN command runs in a different shell, so these need to be run all at once.
+### each RUN command runs in a different shell, so these need to be run all at once.
+### Sometimes the /bin/sh is used by default by the RUN command, if that ever happens use RUN ["/bin/bash", "-c", "..."] instead
 RUN source configs/pulpissimo_rnnext.sh && source configs/platform-gvsoc.sh && make pulp-tools && sed -i "s|git@github.com:GreenWaves-Technologies/pmsis_api.git|https://github.com/GreenWaves-Technologies/pmsis_api.git|" /workspace/RNNASIP/pulp-sdk/project.cfg && make all && echo "export PULP_RISCV_GCC_TOOLCHAIN=$PULP_RISCV_GCC_TOOLCHAIN" >> sourceme.sh
 
 WORKDIR /workspace/
 ENV PULP_PROJECT_HOME="/workspace/RNNASIP/pulp-sdk"
 
 # !!!!!!!!!!!!!
-# when running stuff use this first, followed by && <whatever needs to be run>
+# When adding more tests to be run to this Dockerfile, use this first, followed by && <whatever needs to be run>
 # RUN source ${PULP_PROJECT_HOME}/configs/pulpissimo_rnnext.sh && source ${PULP_PROJECT_HOME}/configs/platfom-gvsoc.sh && source ${PULP_PROJECT_HOME}/sourceme.sh
 # !!!!!!!!!!!!!
 
