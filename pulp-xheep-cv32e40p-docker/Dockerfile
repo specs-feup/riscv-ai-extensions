@@ -3,14 +3,10 @@ FROM ubuntu:noble-20240605
 RUN apt-get update -y && apt-get upgrade -y && apt-get install -y curl wget git lcov libelf1 libelf-dev libftdi1-2 libftdi1-dev libncurses5-dev libssl-dev libudev-dev libusb-1.0-0 lsb-release texinfo autoconf cmake flex bison libexpat-dev gawk tree xterm python3-venv python3-dev bzip2 bc automake autotools-dev libmpc-dev libmpfr-dev libgmp-dev build-essential bison gperf libtool patchutils zlib1g-dev
 
 # SETUP riscv gnu toolchain
-WORKDIR /workspace/
-
-RUN git clone --branch CV32E40P --recursive https://github.com/pulp-platform/pulp-riscv-gnu-toolchain.git
-
-WORKDIR /workspace/pulp-riscv-gnu-toolchain
-
-# possibly alter these flags
-RUN ./configure --prefix=/opt/riscv --with-abi=ilp32 --with-arch=rv32imc --with-cmodel=medlow && make
+WORKDIR /tmp/
+COPY ./dependencies/corev-riscv-toolchain.tar.gz /tmp/corev-riscv-toolchain.tar.gz
+RUN tar -xf corev-riscv-toolchain.tar.gz
+RUN mv ./corev-openhw-gcc-ubuntu2004-20240530 /opt/riscv
 
 ENV RISCV="/opt/riscv"
 
@@ -49,4 +45,13 @@ WORKDIR /workspace/x-heep/
 RUN sed -e s/pyyaml==6.0/pyyaml==6.0.1/ -e s/yamlfmt==1.1/yamlfmt==1.1.1/ -i python-requirements.txt
 RUN make venv
 
+## add test file to be used later
+RUN mkdir /workspace/x-heep/sw/applications/pulp_instruction
+COPY ./dependencies/test.c /workspace/x-heep/sw/applications/pulp_instruction/main.c
+
+## make verilator
+RUN ["/bin/bash", "-c", "source /workspace/x-heep/.venv/bin/activate && make mcu-gen CPU=cv32e40p && make verilator-sim FUSESOC_PARAM='--COREV_PULP=1 --FPU=1' && make app PROJECT='pulp_instruction' ARCH='rv32imfcxcvbitmanip'"]
+RUN ["/bin/bash", "-c", "source /workspace/x-heep/.venv/bin/activate && cd /workspace/x-heep/build/openhwgroup.org_systems_core-v-mini-mcu_0/sim-verilator && ./Vtestharness +firmware=../../../sw/build/main.hex && cat uart0.log"]
+
+## automatically source venv when getting into the container via bash
 RUN echo "source /workspace/x-heep/.venv/bin/activate" >> /root/.bashrc

@@ -1,12 +1,15 @@
-# Pulp X-Heep with cv32e40p core
+# Pulp/Corev X-Heep with cv32e40p core
 
-Builds x-heep with a 32e40p core, using the pulp riscv toolchain with the purpose of being to compile and execute Xpulp custom instructions. At this point it is not yet clear this is expressly required.
+Builds x-heep with a 32e40p core, using the pulp riscv toolchain with the purpose of being to compile and execute Xpulp custom instructions. Upon further analysis, it only supports xcorev instructions.
+
+It uses the [core-v toolchain](https://www.embecosm.com/resources/tool-chain-downloads/#corev) provided by embecosm.
+
+WARNING: Please make sure you have the corev toolchain in dependencies with the correct name! If not you can run `sh ./dependencies/get_dependencies.sh` before trying to build the image.
 
 ## Status
 
-- The x-heep baseline tests are still not compilable.
+- In the middle of refactoring...
 
-## XpulpV2 / XpulpNN extensions clarification
+## Pulp extensions
 
-- XpulpV2 is an ISA extension that enables hardware loops, auto-incrementing load/store operations, bit manipulation instructions, fixed-point and 8-bit and 16-bit packed single-instruction-multiple-data (SIMD) operations.
-- XpulpNN is an ISA extension that enables SIMD operations for 4-bit and 2-bit operands.
+A list of all extensions supported by the cv32e40p can be found [here](https://docs.openhwgroup.org/projects/cv32e40p-user-manual/en/latest/instruction_set_extensions.html).
