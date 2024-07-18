@@ -48,3 +48,7 @@ ENV X-HEEP-DIR="/workspace/x-heep"
 WORKDIR /workspace/x-heep/
 RUN sed -e s/pyyaml==6.0/pyyaml==6.0.1/ -e s/yamlfmt==1.1/yamlfmt==1.1.1/ -i python-requirements.txt
 RUN make venv
+
+RUN echo "source /workspace/x-heep/.venv/bin/activate" >> /root/.bashrc
+
+RUN ["/bin/bash", "-c", "source /workspace/x-heep/.venv/bin/activate && make mcu-gen CPU=cv32e40p && make verilator-sim"]
