@@ -1,4 +1,4 @@
-CONTAINER_NAME=xheep-normaltoolchain
+CONTAINER_NAME=xheep
 
 if [ "$(docker ps -a -q -f name=^${CONTAINER_NAME}$)" ]; then
   echo "Container '$CONTAINER_NAME' exists. Removing..."

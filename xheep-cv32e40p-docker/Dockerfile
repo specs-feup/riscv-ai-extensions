@@ -5,9 +5,9 @@ RUN apt-get update -y && apt-get upgrade -y && apt-get install -y curl wget git 
 # SETUP riscv gnu toolchain
 WORKDIR /workspace/
 
-RUN git clone --branch CV32E40P --recursive https://github.com/pulp-platform/pulp-riscv-gnu-toolchain.git
+RUN git clone --branch 2022.01.17 --recursive https://github.com/riscv/riscv-gnu-toolchain
 
-WORKDIR /workspace/pulp-riscv-gnu-toolchain
+WORKDIR /workspace/riscv-gnu-toolchain
 
 # possibly alter these flags
 RUN ./configure --prefix=/opt/riscv --with-abi=ilp32 --with-arch=rv32imc --with-cmodel=medlow && make
@@ -50,3 +50,5 @@ RUN sed -e s/pyyaml==6.0/pyyaml==6.0.1/ -e s/yamlfmt==1.1/yamlfmt==1.1.1/ -i pyt
 RUN make venv
 
 RUN echo "source /workspace/x-heep/.venv/bin/activate" >> /root/.bashrc
+
+RUN ["/bin/bash", "-c", "source /workspace/x-heep/.venv/bin/activate && make mcu-gen CPU=cv32e40p && make verilator-sim"]
