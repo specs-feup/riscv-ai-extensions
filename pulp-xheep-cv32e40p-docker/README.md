@@ -49,7 +49,7 @@ The steps required to run the application vary on the simulator used. Further in
 
 ## Using different simulators
 
-X-Heep currently supports 4 simulators out of the box: [VCS](https://www.synopsys.com/verification/simulation/vcs.html), [Questasim](https://eda.sw.siemens.com/en-US/ic/questa/simulation/advanced-simulator/), [Xcelium](https://www.cadence.com/en_US/home/tools/system-design-and-verification/simulation-and-testbench-verification/xcelium-simulator.html), and [Verilator](https://github.com/verilator/verilator), though the first two require licenses, and as such are not tested here.
+X-Heep currently supports 4 simulators out of the box: [VCS](https://www.synopsys.com/verification/simulation/vcs.html), [Questasim](https://eda.sw.siemens.com/en-US/ic/questa/simulation/advanced-simulator/), [Xcelium](https://www.cadence.com/en_US/home/tools/system-design-and-verification/simulation-and-testbench-verification/xcelium-simulator.html), and [Verilator](https://github.com/verilator/verilator), though the first three require licenses, and as such are not tested here. If you pretend to use them, please acquire a license and install it on top of this container.
 
 The container provided by this repository is set up to support Verilator by default, but it is easy to switch to other simulators.
 
