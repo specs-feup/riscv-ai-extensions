@@ -1,6 +1,6 @@
 # Pulp/Corev X-Heep with cv32e40p core
 
-Builds x-heep with a 32e40p core, using the pulp riscv toolchain with the purpose of being to compile and execute Xpulp custom instructions. Upon further analysis, it only supports xcorev instructions.
+Builds x-heep with a cv32e40p core, using the pulp riscv toolchain with the purpose of being to compile and execute xcorev custom instructions.
 
 It uses the [core-v toolchain](https://www.embecosm.com/resources/tool-chain-downloads/#corev) provided by embecosm.
 
@@ -8,8 +8,14 @@ WARNING: Please make sure you have the corev toolchain in dependencies with the 
 
 ## Status
 
-- In the middle of refactoring...
+- Complete
 
-## Pulp extensions
+## core-v extensions
 
 A list of all extensions supported by the cv32e40p can be found [here](https://docs.openhwgroup.org/projects/cv32e40p-user-manual/en/latest/instruction_set_extensions.html).
+
+## Building Observations
+
+For a thorough explanation of the build steps and utilization tips, check the [observations' README](./observations/README.md).
+
+Additionally, [x-heep's documentation](https://github.com/esl-epfl/x-heep/tree/main/docs/source) may also be of aid.
