@@ -2,11 +2,18 @@
 
 This list was compiled from [the cv32e40p user's manual](https://docs.openhwgroup.org/projects/cv32e40p-user-manual/en/latest/instruction_set_extensions.html).
 
+Cross reference to pulp instructions was built from information in [our pulp compilation](./xpulp_corev-group-instructions.md) and [the pulp opcodes list](https://github.com/pulp-platform/riscv-opcodes/tree/master).
+
 ## Post-Increment Load & Store Instructions and Register-Register Load & Store Instructions
 
 Description: Can be found [here](https://docs.openhwgroup.org/projects/cv32e40p-user-manual/en/latest/instruction_set_extensions.html#post-increment-load-store-instructions-and-register-register-load-store-instructions).
 
 ### Load Operations
+
+Matches xpulppostmod and xpulpindregreg ([src](https://github.com/pulp-platform/riscv-gnu-toolchain/blob/master/core-v.rst)).
+
+#### Register-Immediate Loads with Post-Increment
+
 | Mnemonic | Usage | Description | Pulp equivalent |
 |----------|-------|-------------|-----------------|
 | cv.lb | cv.lb rD, (rs1), Imm | <code> rD = Sext(Mem8(rs1)) <br> rs1 += Sext(Imm[11:0]) </code> | ?? |
@@ -14,11 +21,21 @@ Description: Can be found [here](https://docs.openhwgroup.org/projects/cv32e40p-
 | cv.lh | cv.lh rD, (rs1), Imm | <code> rD = Sext(Mem16(rs1)) <br> rs1 += Sext(Imm[11:0]) </code> | ?? |
 | cv.lhu | cv.lhu rD, (rs1), Imm | <code> rD = Zext(Mem16(rs1)) <br> rs1 += Sext(Imm[11:0]) </code> | ?? |
 | cv.lw | cv.lw rD, (rs1), Imm | <code> rD = Mem32(rs1) <br> rs1 += Sext(Imm[11:0]) </code> | ?? |
+
+#### Register-Register Loads with Post-Increment
+
+| Mnemonic | Usage | Description | Pulp equivalent |
+|----------|-------|-------------|-----------------|
 | cv.lb | cv.lb rD, (rs1), rs2 | <code> rD = Sext(Mem8(rs1)) <br> rs1 += rs2 </code> | ?? |
 | cv.lbu | cv.lbu rD, (rs1), rs2 | <code> rD = Zext(Mem8(rs1)) <br> rs1 += rs2 </code> | ?? |
 | cv.lh | cv.lh rD, (rs1), rs2 | <code> rD = Sext(Mem16(rs1)) <br> rs1 += rs2 </code> | ?? |
 | cv.lhu | cv.lhu rD, (rs1), rs2 | <code> rD = Zext(Mem16(rs1)) <br> rs1 += rs2 </code> | ?? |
 | cv.lw | cv.lw rD, (rs1), rs2 | <code> rD = Mem32(rs1) <br> rs1 += rs2 </code> | ?? |
+
+#### Register-Register Loads
+
+| Mnemonic | Usage | Description | Pulp equivalent |
+|----------|-------|-------------|-----------------|
 | cv.lb | cv.lb rD, rs2(rs1) | <code> rD = Sext(Mem8(rs1 + rs2)) </code> | ?? |
 | cv.lbu | cv.lbu rD, rs2(rs1) | <code> rD = Zext(Mem8(rs1 + rs2)) </code> | ?? |
 | cv.lh | cv.lh rD, rs2(rs1) | <code> rD = Sext(Mem16(rs1 + rs2)) </code> | ?? |
