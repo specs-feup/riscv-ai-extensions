@@ -30,13 +30,13 @@ The third step can be achieved by running a `make app` command under the same di
 - PROJECT: configures which application is going to be compiled. Applications are directories, under `/workspace/x-heep/sw/applications` with a `main.c` file in it. The name of this directory is the value passed to the `PROJECT` flag. In our example, we copy `./dependencies/test.c` to a directory called `pulp_instruction` (and calling the file `main.c`) and then we call `make app PROJECT="pulp_instruction" ...`
 
 - ARCH: configures the architecture used by the compiler to build the application. If an instruction of the `xcvbitmanip` extension is used, then it should be enabled here, otherwise the compiler will throw an error. The value of this flag is any valid [risc-v arch string](https://github.com/pulp-platform/riscv-gnu-toolchain/blob/master/pulp.md#all-extension-subsets) supported by the compiler specified under `RISCV` environment variable (along with the COMPILER_PREFIX option described below), in this docker container it points to `/opt/riscv`, and the compiler can be found on `/opt/riscv/bin/riscv32-corev-elf-gcc`. On the current version of the compiler, `/opt/riscv/bin/riscv32-corev-elf-gcc -march=help` can be run to enumerate all the supported riscv extensions. Non standard extensions (those beginning with x) can be chained together, delimiting them with underscores like so: `rv32imfc_xcvalu_xcvbi_xcvbitmanip`.
-In our case, we enable all supported core-v extensions: `ARCH='rv32imfc_xcvalu_xcvbi_xcvbitmanip_xcvelw_xcvhwlp_xcvmac_xcvmem_xcvsimd'`
+In our case, we enable all supported core-v extensions: `ARCH='rv32imfc_xcvalu_xcvbi_xcvbitmanip_xcvelw_xcvhwlp_xcvmac_xcvmem_xcvsimd_zicsr'`
 
 - COMPILER_PREFIX: configures the prefix which is used to search for the binaries under the directory specified by the `RISCV` environment variable. By default it's `riscv32-unknown-`, as that is what you get if you simply compile the standard riscv gnu toolchain, but since we are using the core-v toolchain `riscv32-corev-` is required.
 
 Overall, compiling an application under the current setup looks like so:
 
-`make app PROJECT='<project name>' ARCH='rv32imfc_xcvalu_xcvbi_xcvbitmanip_xcvelw_xcvhwlp_xcvmac_xcvmem_xcvsimd' COMPILER_PREFIX='riscv32-corev-'`
+`make app PROJECT='<project name>' ARCH='rv32imfc_xcvalu_xcvbi_xcvbitmanip_xcvelw_xcvhwlp_xcvmac_xcvmem_xcvsimd_zicsr' COMPILER_PREFIX='riscv32-corev-'`
 
 Finally, the fourth step consists of changing the directory based on what simulator was compiled and running a command pointing to the compiled binary of the application, which should now be on `/workspace/x-heep/sw/build/main.hex`. Checking the stdout of the program that was run can be achieved by running `cat uart0.log` on the same directory, at least when using Verilog.
 

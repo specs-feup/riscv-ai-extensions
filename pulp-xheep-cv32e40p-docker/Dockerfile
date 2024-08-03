@@ -53,7 +53,7 @@ COPY ./dependencies/test.c /workspace/x-heep/sw/applications/pulp_instruction/ma
 
 ## make verilator
 RUN ["/bin/bash", "-c", "source /workspace/x-heep/.venv/bin/activate && make mcu-gen CPU=cv32e40p && make verilator-sim FUSESOC_PARAM='--COREV_PULP=1 --FPU=1'"]
-RUN ["/bin/bash", "-c", "source /workspace/x-heep/.venv/bin/activate && make app PROJECT='pulp_instruction' ARCH='rv32imfc_xcvalu_xcvbi_xcvbitmanip_xcvelw_xcvhwlp_xcvmac_xcvmem_xcvsimd' COMPILER_PREFIX='riscv32-corev-'"]
+RUN ["/bin/bash", "-c", "source /workspace/x-heep/.venv/bin/activate && make app PROJECT='pulp_instruction' ARCH='rv32imfc_xcvalu_xcvbi_xcvbitmanip_xcvelw_xcvhwlp_xcvmac_xcvmem_xcvsimd_zicsr' COMPILER_PREFIX='riscv32-corev-'"]
 RUN ["/bin/bash", "-c", "source /workspace/x-heep/.venv/bin/activate && cd /workspace/x-heep/build/openhwgroup.org_systems_core-v-mini-mcu_0/sim-verilator && ./Vtestharness +firmware=../../../sw/build/main.hex && cat uart0.log"]
 
 ## automatically source venv when getting into the container via bash
