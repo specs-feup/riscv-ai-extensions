@@ -31,3 +31,15 @@ Tests 91-93 use illegal `cv.bitrev` instructions, and the next ones yielded inco
 #### Interrupts and CSRS
 
 At the beginning of the tests a `csrs` instruction is used to enable interrupts. At the end (previously) a "wait for instruction" (`wfi`) instruction was used. The purpose of this is unclear, but the latter was removed as it did not seem necessary. The former requires the `zicsr` extension when compiling the tests.
+
+## Test collections comments
+
+Remarks on the making of each main.c in [core-v-verif-tests](../dependencies/core-v-verif-tests/)
+
+### pulp_bit_manipulation
+
+Standard instruction renaming and reshaping to a C file. Issues with `.word` directives and bitrev instructions detailed [above](#cvbitrev-instructions).
+
+### pulp_general_alu
+
+Standard instruction renaming and reshaping to a C file. No further problems.
