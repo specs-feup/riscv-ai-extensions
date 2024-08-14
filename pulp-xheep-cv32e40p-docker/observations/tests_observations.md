@@ -47,3 +47,7 @@ Standard instruction renaming and reshaping to a C file. No further problems.
 ### pulp_immediate_branching
 
 Standard instruction renaming and reshaping to a C file. No further problems.
+
+### pulp_multiply_accumulate
+
+Standard instruction renaming and reshaping to a C file. No further problems.
