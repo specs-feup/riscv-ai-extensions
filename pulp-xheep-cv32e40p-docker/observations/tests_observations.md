@@ -43,3 +43,7 @@ Standard instruction renaming and reshaping to a C file. Issues with `.word` dir
 ### pulp_general_alu
 
 Standard instruction renaming and reshaping to a C file. No further problems.
+
+### pulp_immediate_branching
+
+Standard instruction renaming and reshaping to a C file. No further problems.
