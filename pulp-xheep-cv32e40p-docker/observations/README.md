@@ -14,7 +14,7 @@ The required verilator version is v4.210, however it does not compile due to an 
 
 ## Supported Extensions
 
-According to the [CV32E40Pv2 Project Approval](https://github.com/openhwgroup/programs/blob/master/Project-Descriptions-and-Plans/CV32E40Pv2/Project_Concept_for_CV32E40Pv2_June-28.md), "Re-encod(ing) in Custom extension" pulp instructions is one of the main objectives. This leads me to believe that not being able to compile pulp instructions (p.cnt), but rather its corev equivalent (`cv.cnt`) is due to this re-encoding, and also that x-heep is using the v2 version of the core. As such I will proceed based on that assumption.
+According to the [CV32E40Pv2 Project Approval](https://github.com/openhwgroup/programs/blob/master/Project-Descriptions-and-Plans/CV32E40Pv2/Project_Concept_for_CV32E40Pv2_June-28.md), "Re-encod(ing) in Custom extension" pulp instructions is one of the main objectives. This leads me to believe that not being able to compile pulp instructions (`p.cnt`), but rather its corev equivalent (`cv.c `) is due to this re-encoding, and also that x-heep is using the v2 version of the core. As such I will proceed based on that assumption.
 
 The tests will be based on [Openhwgroup's core-v-verif pulp tests](https://github.com/openhwgroup/core-v-verif/blob/master/cv32e40p/tests/programs/custom).
 Before the tests can be assembled, a cross reference between corev encoded instructions and pulp instructions will be conducted, in order to find any discrepancies and exceptions, so that the tests can be adapted to such scenarios.

@@ -25,11 +25,8 @@ Additionally, it is unclear why the authors didn't use the `p.bitrev` instructio
 
 #### cv.bitrev instructions
 
-Tests 91-93 use illegal `cv.bitrev` instructions. From my testing, it appears the first operand cannot be higher than 3. It is possible that when re-encoding the instruction the order of operands was switched (if the 2 last operands were switched they would compile). At any rate, these must be removed as they did not compile.
+Tests 91-93 use illegal `cv.bitrev` instructions, and the next ones yielded incorrect results. The `.word` directives were not translated directly, instead I used the commented out `p.bitrev` (translated to `cv.bitrev`) that would assumedly be the equivalent instructions, however it appears these commented out instructions had the last 2 operands switched. After promptly switching the aforementioned operands, the instructions compiled and yielded correct results.
 
-Tests 94-96 did compile and run, however they gave incorrect results, so they were removed.
-
-More testing is required on these last tests, so this section is not yet 100% complete.
 
 #### Interrupts and CSRS
 
