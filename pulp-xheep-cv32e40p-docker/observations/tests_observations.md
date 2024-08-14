@@ -51,3 +51,87 @@ Standard instruction renaming and reshaping to a C file. No further problems.
 ### pulp_multiply_accumulate
 
 Standard instruction renaming and reshaping to a C file. No further problems.
+
+### pulp_post_increment_load_store
+
+Standard instruction renaming and reshaping to a C file.
+Most of the instructions have suffered changes in one way or another. Most instructions also support multiple usages. As the changes are similar across usages, they are grouped per usage rather than instruction.
+Any and all parenthesis are necessary.
+
+Instruction list:
+- `cv.lb` - loads a byte from memory and sign extends it, then performs post increment according to usage
+- `cv.lbu` - loads a byte from memory and zero-extends it, then performs post increment according to usage
+- `cv.lh` - loads a halfword from memory and sign extends it, then performs post increment according to usage
+- `cv.lhu` - loads a halfword from memory and zero-extends it, then performs post increment according to usage
+- `cv.lw` - loads a word from memory, then performs post increment according to usage
+- `cv.sb` - stores a byte to memory, then performs post increment according to usage
+- `cv.sh` - stores a halfword to memory, then performs post increment according to usage
+- `cv.sw`-  stores a word to memory, then performs post increment according to usage
+
+#### Load with Post Increment of Immediate Offset (tests 1-30)
+
+Instructions affected:
+- `p.lb`
+- `p.lbu`
+- `p.lh`
+- `p.lhu`
+- `p.lw` 
+
+Instructions have changed: from `p.<instr> rD, Imm(rs1!)` to `cv.<instr> rD, (rs1), Imm`
+Post increment type: rs1 = rs1 + Imm
+Old example: `p.lb x18, 0x5(x20!)`
+New example: `cv.lb x18, (x20), 0x5`
+
+In both cases Imm is any value of 12 bits.
+
+#### Load with Post Increment of Register Offset (tests 31-60)
+
+Instructions affected:
+- `p.lb`
+- `p.lbu`
+- `p.lh`
+- `p.lhu`
+- `p.lw` 
+
+Instructions have changed: from `p.<instr> rD, rs2(rs1!)` to `cv.<instr> rD, (rs1), rs2`
+Post increment type: rs1 = rs1 + rs2
+Old example: `p.lb x18, x22(x20!)`
+New example: `cv.lb x18, (x20), x22`
+
+#### Load with Register-Register source (tests 61-90)
+
+Instructions have not changed (apart from the standard renaming).
+Instructions are of type `cv.<instr> rD, rs2(rs1)`, where the data is loaded from `rs1 + rs2`.
+Post increment type: **None**.
+
+#### Store with Post Increment of Immediate Offset (tests 91-108)
+
+Instructions affected:
+- `p.sb`
+- `p.sh`
+- `p.sw`
+
+Instructions have changed: from `p.<instr> rs2, Imm(rs1!)` to `cv.<instr> rs2, (rs1), Imm`
+Post increment type: rs1 = rs1 + Imm
+Old example: `p.sb x17, 0x169(x20!)`
+New example: `cv.sb x17, (x20), 0x169`
+
+In both cases Imm is any value of 12 bits.
+
+#### Store with Post Increment of Register Offset (tests 109-126)
+
+Instructions affected:
+- `p.sb`
+- `p.sh`
+- `p.sw`
+
+Instructions have changed: from `p.<instr> rs2, rs3(rs1!)` to `cv.<instr> rs2, (rs1), rs3`
+Post increment type: rs1 = rs1 + rs3
+Old example: `p.sb x17, x22(x20!)`
+New example: `cv.sb x17, (x20), x22`
+
+### Store with Register-Register source (tests 127-144)
+
+Instructions have not changed (apart from the standard renaming).
+Instructions are of type `cv.<instr> rs2, rs3(rs1)`, where the data from rs2 is stored to `rs1 + rs3`.
+Post increment type: **None**.
