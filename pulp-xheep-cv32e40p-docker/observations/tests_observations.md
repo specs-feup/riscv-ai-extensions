@@ -58,6 +58,8 @@ Standard instruction renaming and reshaping to a C file.
 Most of the instructions have suffered changes in one way or another. Most instructions also support multiple usages. As the changes are similar across usages, they are grouped per usage rather than instruction.
 Any and all parenthesis are necessary.
 
+Lots of errors with this one. Probably will divide this into smaller tests.
+
 Instruction list:
 - `cv.lb` - loads a byte from memory and sign extends it, then performs post increment according to usage
 - `cv.lbu` - loads a byte from memory and zero-extends it, then performs post increment according to usage

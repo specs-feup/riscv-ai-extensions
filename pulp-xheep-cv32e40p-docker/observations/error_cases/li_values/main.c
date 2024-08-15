@@ -1631,7 +1631,8 @@ int main() {
     "beq t4, t5, test144\n\t"
     "c.addi t1, 0x1\n\t"
 "test144:\n\t"
-    "li t3, 0x7d43c000\n\t" // if you remove this instruction the program doesn't run ??????
+    "li t3, 0x7d43c001\n\t" // 0x7d43c000 runs as expected, 0x7d43c001 and higher result in program not finishing, 0x7d43c200 and higher run well ?? 
+    /*
     "li t3, 0x7d43c865\n\t"
     "li x25, 0x0000ec73\n\t"
     "add x26, x25, t6\n\t"
@@ -1640,6 +1641,7 @@ int main() {
     "li t5, 0x7d43c865\n\t"
     "beq t4, t5, exit_check\n\t"
     "c.addi t1, 0x1\n\t"
+*/
 "exit_check:\n\t"
     "mv %0, t1\n\t"
     "mv %1, t2\n\t"
@@ -1650,6 +1652,5 @@ int main() {
 
     //printf("errors1 = %d\n", errors1);
     //printf("errors2 = %d\n", errors2);
-    return errors1 + errors2; // returning 0 even when I changed the program so it would give an error
-    // should probably divide this test into smaller ones so everything fits in temporary registers...
+    return errors1 + errors2;
 }
