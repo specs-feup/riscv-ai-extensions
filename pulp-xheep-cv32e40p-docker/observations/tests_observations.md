@@ -58,17 +58,19 @@ Standard instruction renaming and reshaping to a C file.
 Most of the instructions have suffered changes in one way or another. Most instructions also support multiple usages. As the changes are similar across usages, they are grouped per usage rather than instruction.
 Any and all parenthesis are necessary.
 
-Lots of errors with this one. Probably will divide this into smaller tests.
+There were a lot of errors with this test, so each "load" and "store" usage type has been split into its own file. I also changed (almost) all register usage to temporary ones. Additionally, hardcoded memory addresses have been changed freely to comply with the default x-heep memory constraints.
 
 Instruction list:
-- `cv.lb` - loads a byte from memory and sign extends it, then performs post increment according to usage
-- `cv.lbu` - loads a byte from memory and zero-extends it, then performs post increment according to usage
-- `cv.lh` - loads a halfword from memory and sign extends it, then performs post increment according to usage
-- `cv.lhu` - loads a halfword from memory and zero-extends it, then performs post increment according to usage
-- `cv.lw` - loads a word from memory, then performs post increment according to usage
-- `cv.sb` - stores a byte to memory, then performs post increment according to usage
-- `cv.sh` - stores a halfword to memory, then performs post increment according to usage
-- `cv.sw`-  stores a word to memory, then performs post increment according to usage
+- `cv.lb` - loads a byte from memory and sign extends it. 
+- `cv.lbu` - loads a byte from memory and zero-extends it. 
+- `cv.lh` - loads a halfword from memory and sign extends it. 
+- `cv.lhu` - loads a halfword from memory and zero-extends it. 
+- `cv.lw` - loads a word from memory. 
+- `cv.sb` - stores a byte to memory. 
+- `cv.sh` - stores a halfword to memory. 
+- `cv.sw`-  stores a word to memory.
+
+All of these perform post increment from a register or an immediate, or alternatively get the address from the sum of two registers, depending on usage.
 
 #### Load with Post Increment of Immediate Offset (tests 1-30)
 
@@ -132,8 +134,12 @@ Post increment type: rs1 = rs1 + rs3
 Old example: `p.sb x17, x22(x20!)`
 New example: `cv.sb x17, (x20), x22`
 
+I have elected to keep x26's usage here, as working around it would involve adding more instructions to the tests unless one reuses the t3 register to hold the expected value of the test, which in some weird edge cases may mean that the test isn't failing when supposed to (when storing full words, if the lw instruction that loads the expected value of the test does not alter t3, the test would pass even if the stored value is wrong). It doesn't seem to be causing any issues for now.
+
 ### Store with Register-Register source (tests 127-144)
 
 Instructions have not changed (apart from the standard renaming).
 Instructions are of type `cv.<instr> rs2, rs3(rs1)`, where the data from rs2 is stored to `rs1 + rs3`.
 Post increment type: **None**.
+
+The original tests included an instruction that appeared to be zero'ing out the memory where the value was supposed to be stored, a continuation of what was done in the previous tests, however it appears the authors forgot that the location that was being written to was no longer stored in the same registers as the previous tests, so this was fixed.
