@@ -136,10 +136,24 @@ New example: `cv.sb x17, (x20), x22`
 
 I have elected to keep x26's usage here, as working around it would involve adding more instructions to the tests unless one reuses the t3 register to hold the expected value of the test, which in some weird edge cases may mean that the test isn't failing when supposed to (when storing full words, if the lw instruction that loads the expected value of the test does not alter t3, the test would pass even if the stored value is wrong). It doesn't seem to be causing any issues for now.
 
-### Store with Register-Register source (tests 127-144)
+#### Store with Register-Register source (tests 127-144)
 
 Instructions have not changed (apart from the standard renaming).
 Instructions are of type `cv.<instr> rs2, rs3(rs1)`, where the data from rs2 is stored to `rs1 + rs3`.
 Post increment type: **None**.
 
 The original tests included an instruction that appeared to be zero'ing out the memory where the value was supposed to be stored, a continuation of what was done in the previous tests, however it appears the authors forgot that the location that was being written to was no longer stored in the same registers as the previous tests, so this was fixed.
+
+### pulp_vectorial_add_sub
+
+Standard instruction renaming and reshaping to a C file. Switched `.word` directives with corresponding instructions. Mapped used registers to temporary ones.
+
+Fixed some expected values for tests
+
+#### tests 37-42
+
+Expected test values assumed a logical shift, when an arithmetic shift is performed.
+
+- test37: `0x4c151896` -> `0xcc151896`
+- test38: `0x363d6118` -> `0x363de118`
+- test40: `0x0ec17ba3` -> `0x0ec1fba3`
