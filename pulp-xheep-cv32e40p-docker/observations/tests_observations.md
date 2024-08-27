@@ -188,3 +188,9 @@ Expected test values assumed a logical shift, when an arithmetic shift is perfor
 - test106: `0x1f891d38` -> `0xff89fd38`
 - test107: `0x1c350c5b` -> `0xfc350c5b`
 - test108: `0x0e3c1729` -> `0x0e3cf729`
+
+### pulp_vectorial_avg
+
+Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
+
+###
