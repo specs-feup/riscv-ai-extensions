@@ -193,4 +193,6 @@ Expected test values assumed a logical shift, when an arithmetic shift is perfor
 
 Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
 
-###
+### pulp_vectorial_bit_manip
+
+Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
