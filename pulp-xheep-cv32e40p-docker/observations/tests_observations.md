@@ -196,3 +196,7 @@ Standard instruction renaming and reshaping to a C file. Mapped used registers t
 ### pulp_vectorial_bit_manip
 
 Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
+
+### pulp_vectorial_bitwise
+
+Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
