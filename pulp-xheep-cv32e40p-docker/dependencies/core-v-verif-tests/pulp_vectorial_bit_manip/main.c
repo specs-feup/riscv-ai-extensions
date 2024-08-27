@@ -252,7 +252,7 @@ int main() {
     "mv %0, t1\n\t"
     : "=r" (errors)
     :
-    : "t0", "t1", "t2", "t3", "t4", "t5"
+    : "t1", "t2", "t3", "t4"
     );
 
     printf("errors = %d\n", errors);
