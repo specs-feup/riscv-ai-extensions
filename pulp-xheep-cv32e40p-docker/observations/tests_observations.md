@@ -150,10 +150,41 @@ Standard instruction renaming and reshaping to a C file. Switched `.word` direct
 
 Fixed some expected values for tests
 
-#### tests 37-42
+#### tests 37-54 (cv.add.div{2,4,8})
 
-Expected test values assumed a logical shift, when an arithmetic shift is performed.
+Expected test values assumed a logical shift, when an arithmetic shift is performed (as specified in cv32e40p documentation).
 
 - test37: `0x4c151896` -> `0xcc151896`
 - test38: `0x363d6118` -> `0x363de118`
 - test40: `0x0ec17ba3` -> `0x0ec1fba3`
+- test41: `0x45f76803` -> `0xc5f7e803`
+- test43: `0x1a58353a` -> `0x1a58f53a`
+- test44: `0x1d372db6` -> `0x1d37edb6`
+- test45: `0x34f031e5` -> `0xf4f0f1e5`
+- test47: `0x35ab2e22` -> `0xf5abee22`
+- test48: `0x33a13876` -> `0xf3a1f876`
+- test49: `0x00ae1275` -> `0x00aef275`
+- test50: `0x026310c4` -> `0x0263f0c4`
+- test51: `0x19511e6d` -> `0xf951fe6d`
+- test53: `0x0c471854` -> `0x0c47f854`
+- test54: `0x024e122a` -> `0x024ef22a`
+
+#### tests 91-108 (cv.sub.div{2,4,8})
+
+Expected test values assumed a logical shift, when an arithmetic shift is performed (as specified in cv32e40p documentation).
+
+- test91: `0x274c6211` -> `0x274ce211`
+- test94: `0x78a32ebe` -> `0xf8a32ebe`
+- test95: `0x5cfc6154` -> `0xdcfce154`
+- test96: `0x271c6eb0` -> `0x271ceeb0`
+- test97: `0x05202ab4` -> `0x0520eab4`
+- test98: `0x18b73617` -> `0x18b7f617`
+- test99: `0x35ea17b6` -> `0xf5ea17b6`
+- test100: `0x336a10fb` -> `0xf36a10fb`
+- test101: `0x3f3710df` -> `0xff3710df`
+- test102: `0x3f3a1a85` -> `0xff3a1a85`
+- test104: `0x1fb21f9a` -> `0xffb2ff9a`
+- test105: `0x1818179f` -> `0xf818f79f`
+- test106: `0x1f891d38` -> `0xff89fd38`
+- test107: `0x1c350c5b` -> `0xfc350c5b`
+- test108: `0x0e3c1729` -> `0x0e3cf729`
