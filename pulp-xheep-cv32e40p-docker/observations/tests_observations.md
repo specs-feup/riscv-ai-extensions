@@ -12,25 +12,13 @@ The `zicsr` instruction was added when compiling the test. Explained in [Interru
 
 Finally, all the `p.<name>` instructions has to be switched with `cv.<name>`, to be compilable by the core-v embecosm toolchain (due to the re-encoding).
 
+### .word directives
 
-## Errors
+Across the various tests, some `.word` directives appear, what I assume is a "hardcoded" instruction already encoded, however I have found that this stalls the programs indefinitely at best and causes illegal memory accesses at worst, as such all of these lines were switched with the equivalent instructions.
 
-### pulp_bit_manipulation
+### Interrupts, CSRS and environment
 
-#### .word instructions
-
-Along the test file, some `.word` directives appear, used mainly in tests 91-96 (and in the beginning of the file to set the test_results variable) as way to force a specific instruction already encoded into machine code, however I have found that this stalls the program indefinitely at best and causes illegal memory accesses at worst, as such all of these lines had to be removed.
-
-Additionally, it is unclear why the authors didn't use the `p.bitrev` instruction instead of this hack (the instruction equivalent is even commented next to it), perhaps the gcc at the time didn't support it. At any case, when applicable one could just switch the `.word` directives to the `cv.bitrev` equivalent, but that has its own problems described next.
-
-#### cv.bitrev instructions
-
-Tests 91-93 use illegal `cv.bitrev` instructions, and the next ones yielded incorrect results. The `.word` directives were not translated directly, instead I used the commented out `p.bitrev` (translated to `cv.bitrev`) that would assumedly be the equivalent instructions, however it appears these commented out instructions had the last 2 operands switched. After promptly switching the aforementioned operands, the instructions compiled and yielded correct results.
-
-
-#### Interrupts and CSRS
-
-At the beginning of the tests a `csrs` instruction is used to enable interrupts. At the end (previously) a "wait for instruction" (`wfi`) instruction was used. The purpose of this is unclear, but the latter was removed as it did not seem necessary. The former requires the `zicsr` extension when compiling the tests.
+At the beginning of the tests a `csrs` instruction is used to enable interrupts. At the end (previously) a "wait for instruction" (`wfi`) instruction was used. Additionally, a lot of values are loaded into all the registers. The use of these instructions was unclear, and the tests work without them, so they have been removed.
 
 ## Test collections comments
 
@@ -38,19 +26,21 @@ Remarks on the making of each main.c in [core-v-verif-tests](../dependencies/cor
 
 ### pulp_bit_manipulation
 
-Standard instruction renaming and reshaping to a C file. Issues with `.word` directives and bitrev instructions detailed [above](#cvbitrev-instructions).
+Standard instruction renaming and reshaping to a C file. Switched `.word` directives with corresponding instructions.
+
+Tests 91-93 use illegal `cv.bitrev` instructions, and the next ones yielded incorrect results. The `.word` directives were not translated directly, instead I used the commented out `p.bitrev` (translated to `cv.bitrev`) that would assumedly be the equivalent instructions, however it appears these commented out instructions had the last 2 operands switched. After promptly switching the aforementioned operands, the instructions compiled and yielded correct results.
 
 ### pulp_general_alu
 
-Standard instruction renaming and reshaping to a C file. No further problems.
+Standard instruction renaming and reshaping to a C file.
 
 ### pulp_immediate_branching
 
-Standard instruction renaming and reshaping to a C file. No further problems.
+Standard instruction renaming and reshaping to a C file.
 
 ### pulp_multiply_accumulate
 
-Standard instruction renaming and reshaping to a C file. No further problems.
+Standard instruction renaming and reshaping to a C file.
 
 ### pulp_post_increment_load_store
 
@@ -215,7 +205,7 @@ Standard instruction renaming and reshaping to a C file. Mapped used registers t
 
 ### pulp_vectorial_complex
 
-Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones. Switched .word directives with the corresponding instructions.
+Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones. Switched `.word` directives with the corresponding instructions.
 
 ### pulp_vectorial_dot_product_1
 
@@ -236,3 +226,9 @@ Standard instruction renaming and reshaping to a C file. Mapped used registers t
 ### pulp_vectorial_shift
 
 Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
+
+### pulp_vectorial_shuffle_pack
+
+Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones. Switched `.word` directives with the corresponding instructions.
+
+Tests 8-11 had their immediate values switched. The `cv.shuffle.sci.h` instruction uses only the 2 least significant bits of the immediate value, and the other bits must be set to 0 [src](https://docs.openhwgroup.org/projects/cv32e40p-user-manual/en/latest/instruction_set_extensions.html#id22). As the newest toolchain throws an error if the immediate values are bigger than 3, I have switched the values while keeping the 2 least significant bits intact, adhering to the rules and keeping the test functionality the same (for example `0xc` would become `0x0`).
