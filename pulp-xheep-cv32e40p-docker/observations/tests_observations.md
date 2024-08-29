@@ -229,3 +229,6 @@ Standard instruction renaming and reshaping to a C file. Mapped used registers t
 
 Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
 
+### pulp_vectorial_min
+
+Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
