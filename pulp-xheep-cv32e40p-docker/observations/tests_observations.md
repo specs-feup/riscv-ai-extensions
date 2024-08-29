@@ -1,48 +1,50 @@
-# Tests Observations
+# **Tests Observations**
 
 This file lists all the problems found when adapting the [core-v-verif pulp tests]() to be able to run them in this docker container under x-heep.
 
-## Modifications
+## **Modifications**
+
+### **Instruction renaming and reshaping to a C file**
 
 In order to get the tests running on x-heep some changes had to be made. First, it appears that the testing infrastructure isn't made to support assembly files. Even after tinkering with the make and cmake files, I couldn't get the tests to compile properly (even after making .S files detectable by cmake and fixing some double declarations of global variables it still didn't work), so instead I opted into transforming the tests into inline assembly inside of a main funtion in a .c file.
 
-As such, I had to remove all the `li` instructions at the beginning of the tests, as including them all on the "clobbered" registers lists doesn't allow for compilation. I also removed everything that didn't seem strictly necessary, though I admit much of the purpose of these instructions went over my head. Nonetheless, I added a print with the number of failed tests at the end, which seems to be working (cv.bitrev instruction caused it to be 1, without it it's 0), and called it a day.
+A lot of "setup" instructions whose purpose wasn't explicit, or didn't seem necessary in the context of inline assembly, were removed, including the interrupt enabling/disabling and loading values into all registers at the beginning of the tests.
 
-The `zicsr` instruction was added when compiling the test. Explained in [Interrupts and CSRS](#interrupts-and-csrs).
+Additionally, instead of using hard-coded registers I let gcc handle it, and remapped all instructions to use temporary registers (t0-t6), where t1 and t2 are commonly used for error counting. When this is the case, it is indicated at the beginning of the inline assembly with a comment.
 
 Finally, all the `p.<name>` instructions has to be switched with `cv.<name>`, to be compilable by the core-v embecosm toolchain (due to the re-encoding).
 
-### .word directives
+### **.word directives**
 
-Across the various tests, some `.word` directives appear, what I assume is a "hardcoded" instruction already encoded, however I have found that this stalls the programs indefinitely at best and causes illegal memory accesses at worst, as such all of these lines were switched with the equivalent instructions.
+Across the various tests, some `.word` directives appear, what I assume is a "hardcoded" instruction (already encoded), however I have found that this stalls the programs indefinitely at best and causes illegal memory accesses at worst, as such all of these lines were switched with the intended/equivalent instructions (which were oftenly commented out next to the directive).
 
-### Interrupts, CSRS and environment
+### **Interrupts and CSRS**
 
-At the beginning of the tests a `csrs` instruction is used to enable interrupts. At the end (previously) a "wait for instruction" (`wfi`) instruction was used. Additionally, a lot of values are loaded into all the registers. The use of these instructions was unclear, and the tests work without them, so they have been removed.
+At the beginning of the tests a `csrs` instruction was used to enable interrupts and at the end a "wait for instruction" (`wfi`) instruction was used. The use of these instructions was unclear, and the tests work without them, so they have been removed.
 
-## Test collections comments
+## **Test collections comments**
 
 Remarks on the making of each main.c in [core-v-verif-tests](../dependencies/core-v-verif-tests/)
 
-### pulp_bit_manipulation
+### **pulp_bit_manipulation**
 
-Standard instruction renaming and reshaping to a C file. Switched `.word` directives with corresponding instructions. Mapped used registers to temporary ones.
+Standard instruction renaming and reshaping to a C file. Switched `.word` directives with corresponding instructions.
 
 Tests 91-93 use illegal `cv.bitrev` instructions, and the next ones yielded incorrect results. The `.word` directives were not translated directly, instead I used the commented out `p.bitrev` (translated to `cv.bitrev`) that would assumedly be the equivalent instructions, however it appears these commented out instructions had the last 2 operands switched. After promptly switching the aforementioned operands, the instructions compiled and yielded correct results.
 
-### pulp_general_alu
+### **pulp_general_alu**
 
-Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
+Standard instruction renaming and reshaping to a C file.
 
-### pulp_immediate_branching
+### **pulp_immediate_branching**
 
-Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
+Standard instruction renaming and reshaping to a C file.
 
-### pulp_multiply_accumulate
+### **pulp_multiply_accumulate**
 
-Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
+Standard instruction renaming and reshaping to a C file.
 
-### pulp_post_increment_load_store
+### **pulp_post_increment_load_store**
 
 Standard instruction renaming and reshaping to a C file.
 Most of the instructions have suffered changes in one way or another. Most instructions also support multiple usages. As the changes are similar across usages, they are grouped per usage rather than instruction.
@@ -62,7 +64,7 @@ Instruction list:
 
 All of these perform post increment from a register or an immediate, or alternatively get the address from the sum of two registers, depending on usage.
 
-#### Load with Post Increment of Immediate Offset (tests 1-30)
+#### **Load with Post Increment of Immediate Offset (tests 1-30)**
 
 Instructions affected:
 - `p.lb`
@@ -78,7 +80,7 @@ New example: `cv.lb x18, (x20), 0x5`
 
 In both cases Imm is any value of 12 bits.
 
-#### Load with Post Increment of Register Offset (tests 31-60)
+#### **Load with Post Increment of Register Offset (tests 31-60)**
 
 Instructions affected:
 - `p.lb`
@@ -92,13 +94,13 @@ Post increment type: rs1 = rs1 + rs2
 Old example: `p.lb x18, x22(x20!)`
 New example: `cv.lb x18, (x20), x22`
 
-#### Load with Register-Register source (tests 61-90)
+#### **Load with Register-Register source (tests 61-90)**
 
 Instructions have not changed (apart from the standard renaming).
 Instructions are of type `cv.<instr> rD, rs2(rs1)`, where the data is loaded from `rs1 + rs2`.
 Post increment type: **None**.
 
-#### Store with Post Increment of Immediate Offset (tests 91-108)
+#### **Store with Post Increment of Immediate Offset (tests 91-108)**
 
 Instructions affected:
 - `p.sb`
@@ -112,7 +114,7 @@ New example: `cv.sb x17, (x20), 0x169`
 
 In both cases Imm is any value of 12 bits.
 
-#### Store with Post Increment of Register Offset (tests 109-126)
+#### **Store with Post Increment of Register Offset (tests 109-126)**
 
 Instructions affected:
 - `p.sb`
@@ -126,7 +128,7 @@ New example: `cv.sb x17, (x20), x22`
 
 I have elected to keep x26's usage here, as working around it would involve adding more instructions to the tests unless one reuses the t3 register to hold the expected value of the test, which in some weird edge cases may mean that the test isn't failing when supposed to (when storing full words, if the lw instruction that loads the expected value of the test does not alter t3, the test would pass even if the stored value is wrong). It doesn't seem to be causing any issues for now.
 
-#### Store with Register-Register source (tests 127-144)
+#### **Store with Register-Register source (tests 127-144)**
 
 Instructions have not changed (apart from the standard renaming).
 Instructions are of type `cv.<instr> rs2, rs3(rs1)`, where the data from rs2 is stored to `rs1 + rs3`.
@@ -134,13 +136,13 @@ Post increment type: **None**.
 
 The original tests included an instruction that appeared to be zero'ing out the memory where the value was supposed to be stored, a continuation of what was done in the previous tests, however it appears the authors forgot that the location that was being written to was no longer stored in the same registers as the previous tests, so this was fixed.
 
-### pulp_vectorial_add_sub
+### **pulp_vectorial_add_sub**
 
-Standard instruction renaming and reshaping to a C file. Switched `.word` directives with corresponding instructions. Mapped used registers to temporary ones.
+Standard instruction renaming and reshaping to a C file. Switched `.word` directives with corresponding instructions. 
 
 Fixed some expected values for tests
 
-#### tests 37-54 (cv.add.div{2,4,8})
+#### **tests 37-54 (cv.add.div{2,4,8})**
 
 Expected test values assumed a logical shift, when an arithmetic shift is performed (as specified in cv32e40p documentation).
 
@@ -159,7 +161,7 @@ Expected test values assumed a logical shift, when an arithmetic shift is perfor
 - test53: `0x0c471854` -> `0x0c47f854`
 - test54: `0x024e122a` -> `0x024ef22a`
 
-#### tests 91-108 (cv.sub.div{2,4,8})
+#### **tests 91-108 (cv.sub.div{2,4,8})**
 
 Expected test values assumed a logical shift, when an arithmetic shift is performed (as specified in cv32e40p documentation).
 
@@ -179,56 +181,56 @@ Expected test values assumed a logical shift, when an arithmetic shift is perfor
 - test107: `0x1c350c5b` -> `0xfc350c5b`
 - test108: `0x0e3c1729` -> `0x0e3cf729`
 
-### pulp_vectorial_avg
+### **pulp_vectorial_avg**
 
-Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
+Standard instruction renaming and reshaping to a C file. 
 
-### pulp_vectorial_bit_manip
+### **pulp_vectorial_bit_manip**
 
-Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
+Standard instruction renaming and reshaping to a C file. 
 
-### pulp_vectorial_bitwise
+### **pulp_vectorial_bitwise**
 
-Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
+Standard instruction renaming and reshaping to a C file. 
 
-### pulp_vectorial_comparison_1
+### **pulp_vectorial_comparison_1**
 
-Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
+Standard instruction renaming and reshaping to a C file. 
 
-### pulp_vectorial_comparison_2
+### **pulp_vectorial_comparison_2**
 
-Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
+Standard instruction renaming and reshaping to a C file. 
 
-### pulp_vectorial_comparison_3
+### **pulp_vectorial_comparison_3**
 
-Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
+Standard instruction renaming and reshaping to a C file. 
 
-### pulp_vectorial_complex
+### **pulp_vectorial_complex**
 
-Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones. Switched `.word` directives with the corresponding instructions.
+Standard instruction renaming and reshaping to a C file.  Switched `.word` directives with the corresponding instructions.
 
-### pulp_vectorial_dot_product_1
+### **pulp_vectorial_dot_product_1**
 
-Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
+Standard instruction renaming and reshaping to a C file. 
 
-### pulp_vectorial_dot_product_2
+### **pulp_vectorial_dot_product_2**
 
-Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
+Standard instruction renaming and reshaping to a C file. 
 
-### pulp_vectorial_max
+### **pulp_vectorial_max**
 
-Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
+Standard instruction renaming and reshaping to a C file. 
 
-### pulp_vectorial_min
+### **pulp_vectorial_min**
 
-Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
+Standard instruction renaming and reshaping to a C file. 
 
-### pulp_vectorial_shift
+### **pulp_vectorial_shift**
 
-Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
+Standard instruction renaming and reshaping to a C file. 
 
-### pulp_vectorial_shuffle_pack
+### **pulp_vectorial_shuffle_pack**
 
-Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones. Switched `.word` directives with the corresponding instructions.
+Standard instruction renaming and reshaping to a C file.  Switched `.word` directives with the corresponding instructions.
 
 Tests 8-11 had their immediate values switched. The `cv.shuffle.sci.h` instruction uses only the 2 least significant bits of the immediate value, and the other bits must be set to 0 [src](https://docs.openhwgroup.org/projects/cv32e40p-user-manual/en/latest/instruction_set_extensions.html#id22). As the newest toolchain throws an error if the immediate values are bigger than 3, I have switched the values while keeping the 2 least significant bits intact, adhering to the rules and keeping the test functionality the same (for example `0xc` would become `0x0`).
