@@ -32,7 +32,7 @@ Tests 91-93 use illegal `cv.bitrev` instructions, and the next ones yielded inco
 
 ### pulp_general_alu
 
-Standard instruction renaming and reshaping to a C file.
+Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
 
 ### pulp_immediate_branching
 
