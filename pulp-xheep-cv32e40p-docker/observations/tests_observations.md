@@ -40,7 +40,7 @@ Standard instruction renaming and reshaping to a C file. Mapped used registers t
 
 ### pulp_multiply_accumulate
 
-Standard instruction renaming and reshaping to a C file.
+Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
 
 ### pulp_post_increment_load_store
 
