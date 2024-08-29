@@ -212,3 +212,7 @@ Standard instruction renaming and reshaping to a C file. Mapped used registers t
 ### pulp_vectorial_comparison_3
 
 Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
+
+### pulp_vectorial_complex
+
+Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones. Switched .word directives with the corresponding instructions.
