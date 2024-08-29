@@ -36,7 +36,7 @@ Standard instruction renaming and reshaping to a C file. Mapped used registers t
 
 ### pulp_immediate_branching
 
-Standard instruction renaming and reshaping to a C file.
+Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
 
 ### pulp_multiply_accumulate
 
