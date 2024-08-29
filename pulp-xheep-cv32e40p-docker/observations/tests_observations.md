@@ -224,3 +224,8 @@ Standard instruction renaming and reshaping to a C file. Mapped used registers t
 ### pulp_vectorial_dot_product_2
 
 Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
+
+### pulp_vectorial_max
+
+Standard instruction renaming and reshaping to a C file. Mapped used registers to temporary ones.
+
