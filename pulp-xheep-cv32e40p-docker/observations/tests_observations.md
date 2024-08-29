@@ -26,7 +26,7 @@ Remarks on the making of each main.c in [core-v-verif-tests](../dependencies/cor
 
 ### pulp_bit_manipulation
 
-Standard instruction renaming and reshaping to a C file. Switched `.word` directives with corresponding instructions.
+Standard instruction renaming and reshaping to a C file. Switched `.word` directives with corresponding instructions. Mapped used registers to temporary ones.
 
 Tests 91-93 use illegal `cv.bitrev` instructions, and the next ones yielded incorrect results. The `.word` directives were not translated directly, instead I used the commented out `p.bitrev` (translated to `cv.bitrev`) that would assumedly be the equivalent instructions, however it appears these commented out instructions had the last 2 operands switched. After promptly switching the aforementioned operands, the instructions compiled and yielded correct results.
 
