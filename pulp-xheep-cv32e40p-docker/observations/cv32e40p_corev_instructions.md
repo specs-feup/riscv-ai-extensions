@@ -15,8 +15,8 @@ Matches xpulppostmod and xpulpindregreg ([src](https://github.com/pulp-platform/
 #### Register-Immediate Loads with Post-Increment
 
 | Mnemonic | Usage | Description | Pulp equivalent | Tested |
-|----------|-------|-------------|-----------------|--------|
-| cv.lb | cv.lb rD, (rs1), Imm | <code> rD = Sext(Mem8(rs1)) <br> rs1 += Sext(Imm[11:0]) </code> | ?? | [X] |
+|----------|-------|-------------|-----------------|:------:|
+| cv.lb | cv.lb rD, (rs1), Imm | <code> rD = Sext(Mem8(rs1)) <br/> rs1 += Sext(Imm[11:0]) </code> | ?? | [X] |
 | cv.lbu | cv.lbu rD, (rs1), Imm | <code> rD = Zext(Mem8(rs1)) <br> rs1 += Sext(Imm[11:0]) </code> | ?? | [X] |
 | cv.lh | cv.lh rD, (rs1), Imm | <code> rD = Sext(Mem16(rs1)) <br> rs1 += Sext(Imm[11:0]) </code> | ?? | [X] |
 | cv.lhu | cv.lhu rD, (rs1), Imm | <code> rD = Zext(Mem16(rs1)) <br> rs1 += Sext(Imm[11:0]) </code> | ?? | [X] |
@@ -25,7 +25,7 @@ Matches xpulppostmod and xpulpindregreg ([src](https://github.com/pulp-platform/
 #### Register-Register Loads with Post-Increment
 
 | Mnemonic | Usage | Description | Pulp equivalent | Tested |
-|----------|-------|-------------|-----------------|--------|
+|----------|-------|-------------|-----------------|:------:|
 | cv.lb | cv.lb rD, (rs1), rs2 | <code> rD = Sext(Mem8(rs1)) <br> rs1 += rs2 </code> | ?? | [X] |
 | cv.lbu | cv.lbu rD, (rs1), rs2 | <code> rD = Zext(Mem8(rs1)) <br> rs1 += rs2 </code> | ?? | [X] |
 | cv.lh | cv.lh rD, (rs1), rs2 | <code> rD = Sext(Mem16(rs1)) <br> rs1 += rs2 </code> | ?? | [X] |
@@ -35,7 +35,7 @@ Matches xpulppostmod and xpulpindregreg ([src](https://github.com/pulp-platform/
 #### Register-Register Loads
 
 | Mnemonic | Usage | Description | Pulp equivalent | Tested |
-|----------|-------|-------------|-----------------|--------|
+|----------|-------|-------------|-----------------|:------:|
 | cv.lb | cv.lb rD, rs2(rs1) | <code> rD = Sext(Mem8(rs1 + rs2)) </code> | ?? | [X] |
 | cv.lbu | cv.lbu rD, rs2(rs1) | <code> rD = Zext(Mem8(rs1 + rs2)) </code> | ?? | [X] |
 | cv.lh | cv.lh rD, rs2(rs1) | <code> rD = Sext(Mem16(rs1 + rs2)) </code> | ?? | [X] |
@@ -45,7 +45,7 @@ Matches xpulppostmod and xpulpindregreg ([src](https://github.com/pulp-platform/
 ### Store Operations
 
 | Mnemonic | Usage | Description | Pulp equivalent | Tested |
-|----------|-------|-------------|-----------------|--------|
+|----------|-------|-------------|-----------------|:------:|
 | cv.sb | cv.sb rs2, (rs1), Imm | <code> Mem8(rs1) = rs2 <br> rs1 += Sext(Imm[11:0]) </code> | ?? | [X] |
 | cv.sh | cv.sh rs2, (rs1), Imm | <code> Mem16(rs1) = rs2 <br> rs1 += Sext(Imm[11:0]) </code> | ?? | [X] |
 | cv.sw | cv.sw rs2, (rs1), Imm | <code> Mem32(rs1) = rs2 <br> rs1 += Sext(Imm[11:0]) </code> | ?? | [X] |
@@ -62,7 +62,7 @@ Description: Can be found [here](https://docs.openhwgroup.org/projects/cv32e40p-
 
 
 | Mnemonic | Usage | Description | Pulp equivalent | Tested |
-|----------|-------|-------------|-----------------|--------|
+|----------|-------|-------------|-----------------|:------:|
 | cv.elw | cv.elw rD, Imm(rs1) | <code> rD = Mem32(Sext(Imm) + rs1) </code> | ?? | [ ] |
 
 ## Hardware Loops
@@ -70,7 +70,7 @@ Description: Can be found [here](https://docs.openhwgroup.org/projects/cv32e40p-
 Description: Can be found [here](https://docs.openhwgroup.org/projects/cv32e40p-user-manual/en/latest/instruction_set_extensions.html#hardware-loops).
 
 | Mnemonic | Usage | Description | Pulp equivalent | Tested |
-|----------|-------|-------------|-----------------|--------|
+|----------|-------|-------------|-----------------|:------:|
 | cv.starti | cv.starti L, uimmL | <code> lpstart[L] = PC + (uimmL << 2) </code> | ?? | [ ] |
 | cv.start | cv.start L, rs1 | <code> lpstart[L] = rs1 </code> | ?? | [ ] |
 | cv.endi | cv.endi L, uimmL | <code> lpend[L] = PC + (uimmL << 2) </code> | ?? | [ ] |
@@ -88,7 +88,7 @@ Description: Can be found [here](https://docs.openhwgroup.org/projects/cv32e40p-
 
 
 | Mnemonic | Usage | Description | Pulp equivalent | Tested |
-|----------|-------|-------------|-----------------|--------|
+|----------|-------|-------------|-----------------|:------:|
 | cv.extract | cv.extract rD, rs1, Is3, Is2 | <code> rD = Sext(rs1[min(Is3+Is2,31):Is2]) <br> Note: Sign extension is done over the MSB of the extracted part. </code> | ?? | [X] |
 | cv.extractu | cv.extractu rD, rs1, Is3, Is2 | <code> rD = Zext(rs1[min(Is3+Is2,31):Is2]) </code> | ?? | [X] |
 | cv.extractr | cv.extractr rD, rs1, rs2 | <code> rD = Sext(rs1[min(rs2[9:5]+rs2[4:0],31):rs2[4:0]]) <br> Note: Sign extension is done over the MSB of the extracted part. </code> | ?? | [X] |
@@ -111,7 +111,7 @@ Description: Can be found [here](https://docs.openhwgroup.org/projects/cv32e40p-
 Note: In cv32e40p's manual, `cv.sle` is mentioned, but the core-v-verif repository uses `cv.slet` instead. I have tested the instructions separately and they appear to behave in the same way. The same applies to its unsigned counterpart, `cv.sleu` and `cv.sletu`.
 
 | Mnemonic | Usage | Description | Pulp equivalent | Tested |
-|----------|-------|-------------|-----------------|--------|
+|----------|-------|-------------|-----------------|:------:|
 | cv.abs | cv.abs rD, rs1 | <code>  rD = rs1 < 0 ? -rs1 : rs1 </code>  | ?? | [X] |
 | cv.sle[t] | cv.sle[t] rD, rs1, rs2 | <code>  rD = rs1 <= rs2 ? 1 : 0 <br> Note: Comparison is signed. </code>  | ?? | [X] |
 | cv.sle[t]u | cv.sle[t]u rD, rs1, rs2 | <code>  rD = rs1 <= rs2 ? 1 : 0 <br> Note: Comparison is unsigned. </code>  | ?? | [X] |
@@ -147,7 +147,7 @@ Note: In cv32e40p's manual, `cv.sle` is mentioned, but the core-v-verif reposito
 ### Immediate Branching Operations
 
 | Mnemonic | Usage | Description | Pulp equivalent | Tested |
-|----------|-------|-------------|-----------------|--------|
+|----------|-------|-------------|-----------------|:------:|
 | cv.beqimm | cv.beqimm rs1, Imm5, Imm12 | <code>  Branch to PC + (Imm12 << 1) if rs1 is equal to Imm5. <br> Note: Imm5 is signed. </code>  | ?? | [X] |
 | cv.bneimm | cv.bneimm rs1, Imm5, Imm12 | <code>  Branch to PC + (Imm12 << 1) if rs1 is not equal to Imm5. <br> Note: Imm5 is signed. </code>  | ?? | [X] |
 
@@ -158,7 +158,7 @@ Description: Can be found [here](https://docs.openhwgroup.org/projects/cv32e40p-
 ### 16-Bit x 16-Bit Multiplication operations
 
 | Mnemonic | Usage | Description | Pulp equivalent | Tested |
-|----------|-------|-------------|-----------------|--------|
+|----------|-------|-------------|-----------------|:------:|
 | cv.muluN | cv.muluN rD, rs1, rs2, Is3 | <code>  rD[31:0] = (Zext(rs1[15:0]) * Zext(rs2[15:0])) >> Is3 <br> Note: Logical shift right. </code>  | ?? | [X] |
 | cv.mulhhuN | cv.mulhhuN rD, rs1, rs2, Is3 | <code>  rD[31:0] = (Zext(rs1[31:16]) * Zext(rs2[31:16])) >> Is3 <br> Note: Logical shift right. </code>  | ?? | [X] |
 | cv.mulsN | cv.mulsN rD, rs1, rs2, Is3 | <code>  rD[31:0] = (Sext(rs1[15:0]) * Sext(rs2[15:0])) >>> Is3 <br> Note: Arithmetic shift right. </code>  | ?? | [X] |
@@ -171,7 +171,7 @@ Description: Can be found [here](https://docs.openhwgroup.org/projects/cv32e40p-
 ### 16-Bit x 16-Bit Multiplication pseudo-instructions
 
 | Mnemonic | Usage | Base Instruction | Description | Pulp equivalent | Tested |
-|----------|-------|------------------|-------------|-----------------|--------|
+|----------|-------|------------------|-------------|-----------------|:------:|
 | cv.mulu | cv.mulu rD, rs1, rs2 | cv.muluN rD, rs1, rs2, 0 | <code> rD[31:0] = (Zext(rs1[15:0]) * Zext(rs2[15:0])) >> 0 <br> Note: Logical shift right. </code>  | ?? | [X] |
 | cv.mulhhu | cv.mulhhu rD, rs1, rs2 | cv.mulhhuN rD, rs1, rs2, 0 | <code> rD[31:0] = (Zext(rs1[31:16]) * Zext(rs2[31:16])) >> 0 <br> Note: Logical shift right. </code>  | ?? | [X] |
 | cv.muls | cv.muls rD, rs1, rs2 | cv.mulsN rD, rs1, rs2, 0 | <code> rD[31:0] = (Sext(rs1[15:0]) * Sext(rs2[15:0])) >> 0 <br> Note: Arithmetic shift right. </code>  | ?? | [X] |
@@ -180,7 +180,7 @@ Description: Can be found [here](https://docs.openhwgroup.org/projects/cv32e40p-
 ### 16-Bit x 16-Bit Multiply-Accumulate operations
 
 | Mnemonic | Usage | Description | Pulp equivalent | Tested |
-|----------|-------|-------------|-----------------|--------|
+|----------|-------|-------------|-----------------|:------:|
 | cv.macuN | cv.macuN rD, rs1, rs2, Is3 | <code>  rD[31:0] = (Zext(rs1[15:0]) * Zext(rs2[15:0]) + rD) >> Is3 <br> Note: Logical shift right. </code>  | ?? | [X] |
 | cv.machhuN | cv.machhuN rD, rs1, rs2, Is3 | <code>  rD[31:0] = (Zext(rs1[31:16]) * Zext(rs2[31:16]) + rD) >> Is3 <br> Note: Logical shift right. </code>  | ?? | [X] |
 | cv.macsN | cv.macsN rD, rs1, rs2, Is3 | <code>  rD[31:0] = (Sext(rs1[15:0]) * Sext(rs2[15:0]) + rD) >>> Is3 <br> Note: Arithmetic shift right. </code>  | ?? | [X] |
@@ -193,7 +193,7 @@ Description: Can be found [here](https://docs.openhwgroup.org/projects/cv32e40p-
 ### 32-Bit x 32-Bit Multiply-Accumulate operations
 
 | Mnemonic | Usage | Description | Pulp equivalent | Tested |
-|----------|-------|-------------|-----------------|--------|
+|----------|-------|-------------|-----------------|:------:|
 | cv.mac | cv.mac rD, rs1, rs2 | <code>  rD = rD + rs1 * rs2 </code>  | ?? | [X] |
 | cv.msu | cv.msu rD, rs1, rs2 | <code>  rD = rD - rs1 * rs2 </code>  | ?? | [X] |
 
@@ -204,7 +204,7 @@ Description: Can be found [here](https://docs.openhwgroup.org/projects/cv32e40p-
 ### SIMD ALU operations
 
 | Mnemonic | Usage | Description | Pulp equivalent | Tested |
-|----------|-------|-------------|-----------------|--------|
+|----------|-------|-------------|-----------------|:------:|
 | cv.add | cv.add[.sc,.sci]{.h,.b} rD, rs1, [rs2, Imm6] | <code>  rD[i] = (rs1[i] + op2[i]) & {0xFFFF, 0xFF} </code>  | ?? | [X] |
 | cv.sub | cv.sub[.sc,.sci]{.h,.b} rD, rs1, [rs2, Imm6] | <code>  rD[i] = (rs1[i] - op2[i]) & {0xFFFF, 0xFF} </code>  | ?? | [X] |
 | cv.avg | cv.avg[.sc,.sci]{.h,.b} rD, rs1, [rs2, Imm6] | <code>  rD[i] = ((rs1[i] + op2[i]) & {0xFFFF, 0xFF}) >> 1 <br> Note: Arithmetic right shift. </code>  | ?? | [X] |
@@ -224,7 +224,7 @@ Description: Can be found [here](https://docs.openhwgroup.org/projects/cv32e40p-
 ### SIMD Bit Manipulation operations
 
 | Mnemonic | Usage | Description | Pulp equivalent | Tested |
-|----------|-------|-------------|-----------------|--------|
+|----------|-------|-------------|-----------------|:------:|
 | cv.extract.h | cv.extract.h rD, rs1, Imm6 | <code>  rD = Sext(rs1[I0*16+15:I0*16]) <br> Note: Only Imm6[0] bit is used and other Imm6 bits must be set to 0. </code>  | ?? | [X] |
 | cv.extract.b | cv.extract.b rD, rs1, Imm6 | <code>  rD = Sext(rs1[(I1:I0)*8+7:(I1:I0)*8]) <br> Note: Only Imm6[1:0] bits are used and other Imm6 bits must be set to 0. </code>  | ?? | [X] |
 | cv.extractu.h | cv.extractu.h rD, rs1, Imm6 | <code>  rD = Zext(rs1[I0*16+15:I0*16]) <br> Note: Only Imm6[0] bit is used and other Imm6 bits must be set to 0. </code>  | ?? | [X] |
@@ -236,7 +236,7 @@ Description: Can be found [here](https://docs.openhwgroup.org/projects/cv32e40p-
 ### SIMD Dot Product operations
 
 | Mnemonic | Usage | Description | Pulp equivalent | Tested |
-|----------|-------|-------------|-----------------|--------|
+|----------|-------|-------------|-----------------|:------:|
 | cv.dotup | cv.dotup[.sc,.sci].h rD, rs1, [rs2, Imm6] | <code> rD = rs1[0] * op2[0] + rs1[1] * op2[1] <br> Note: All operands are unsigned. </code> | ?? | [X] |
 | cv.dotup | cv.dotup[.sc,.sci].b rD, rs1, [rs2, Imm6] | <code> rD = rs1[0] * op2[0] + rs1[1] * op2[1] +  rs1[2] * op2[2] + rs1[3] * op2[3] <br> Note: All operands are unsigned. </code> | ?? | [X] |
 | cv.dotusp | cv.dotusp[.sc,.sci].h rD, rs1, [rs2, Imm6] | <code> rD = rs1[0] * op2[0] + rs1[1] * op2[1] <br> Note: rs1 is treated as unsigned, while op2 is treated as signed. </code> | ?? | [X] |
@@ -254,7 +254,7 @@ Description: Can be found [here](https://docs.openhwgroup.org/projects/cv32e40p-
 
 
 | Mnemonic | Usage | Description | Pulp equivalent | Tested |
-|----------|-------|-------------|-----------------|--------|
+|----------|-------|-------------|-----------------|:------:|
 | cv.shuffle | cv.shuffle.h rD, rs1, rs2 | <code> rD[31:16] = rs1[rs2[16]*16+15:rs2[16]*16] <br> rD[15:0] = rs1[rs2[0]*16+15:rs2[0]*16] </code> | ?? | [X] |
 | cv.shuffle | cv.shuffle.sci.h rD, rs1, Imm6 | <code> rD[31:16] = rs1[I1*16+15:I1*16] <br>  rD[15:0] = rs1[I0*16+15:I0*16] <br> Note: Only Imm6[1:0] bits are used and other Imm6 bits must be set to 0. </code> | ?? | [X] |
 | cv.shuffle | cv.shuffle.b rD, rs1, rs2 | <code> rD[31:24] = rs1[rs2[25:24]*8+7:rs2[25:24]*8] <br>  rD[23:16] = rs1[rs2[17:16]*8+7:rs2[17:16]*8] <br>  rD[15:8] = rs1[rs2[9:8]*8+7:rs2[9:8]*8] <br> rD[7:0] = rs1[rs2[1:0]*8+7:rs2[1:0]*8] </code> | ?? | [X] |
@@ -274,7 +274,7 @@ Description: Can be found [here](https://docs.openhwgroup.org/projects/cv32e40p-
 Description: Can be found [here](https://docs.openhwgroup.org/projects/cv32e40p-user-manual/en/latest/instruction_set_extensions.html#simd-comparison-operations).
 
 | Mnemonic | Usage | Description | Pulp equivalent | Tested |
-|----------|-------|-------------|-----------------|--------|
+|----------|-------|-------------|-----------------|:------:|
 | cv.cmpeq | cv.cmpeq[.sc,.sci]{.h,.b} rD, rs1, [rs2, Imm6] | <code> rD[i] = rs1[i] == op2 ? ‘1 : ‘0 </code> | ?? | [X] |
 | cv.cmpne | cv.cmpne[.sc,.sci]{.h,.b} rD, rs1, [rs2, Imm6] | <code> rD[i] = rs1[i] != op2 ? ‘1 : ‘0 </code> | ?? | [X] |
 | cv.cmpgt | cv.cmpgt[.sc,.sci]{.h,.b} rD, rs1, [rs2, Imm6] | <code> rD[i] = rs1[i] > op2 ? ‘1 : ‘0 </code> | ?? | [X] |
@@ -290,7 +290,7 @@ Description: Can be found [here](https://docs.openhwgroup.org/projects/cv32e40p-
 Description: Can be found [here](https://docs.openhwgroup.org/projects/cv32e40p-user-manual/en/latest/instruction_set_extensions.html#simd-complex-number-operations).
 
 | Mnemonic | Usage | Description | Pulp equivalent | Tested |
-|----------|-------|-------------|-----------------|--------|
+|----------|-------|-------------|-----------------|:------:|
 | cv.cplxmul.r | cv.cplxmul.r{/,.div2,.div4,.div8} | <code> rD[1] = rD[1] <br>  rD[0] = (rs1[0]*rs2[0] - rs1[1]*rs2[1]) >> {15,16,17,18} <br> Note: Arithmetic shift right. </code> | ?? | [X] |
 | cv.cplxmul.i | cv.cplxmul.i{/,.div2,.div4,.div8} | <code> rD[1] = (rs1[0]*rs2[1] + rs1[1]*rs2[0]) >> {15,16,17,18} <br>  rD[0] = rD[0] <br> Note: Arithmetic shift right. </code> | ?? | [X] |
 | cv.cplxconj | cv.cplxconj rD, rs1 | <code> rD[1] = -rs1[1] <br> rD[0] = rs1[0] </code> | ?? | [X] |
