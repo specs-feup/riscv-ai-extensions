@@ -367,7 +367,7 @@ Note: These instructions have similar versions in [risc-v opcodes](https://githu
 | pv.sub.h.div4 | | possibly changed to cv.sub.div2 | [ ] | [ ] |
 | pv.sub.h.div8 | | possibly changed to cv.sub.div2 | [ ] | [ ] |
 
-## xpulpvectshufflepack extension
+## xpulpvectshufflek extension
 
 | Mnemonic | Usage | Description | riscv-opcodes | datasheet |
 |----------|-------|-------------|---------------|-----------|
@@ -401,7 +401,7 @@ Note: These instructions have similar versions in [risc-v opcodes](https://githu
 | pv.subrotmj.h.div2 | NA | possibly changed to cv.subrotmj.div2 | [ ] | [ ] |
 | pv.subrotmj.h.div4 | NA | possibly changed to cv.subrotmj.div4 | [ ] | [ ] |
 | pv.subrotmj.h.div8 | NA | possibly changed to cv.subrotmj.div8 | [ ] | [ ] |
-| pv.cplxconj.h | pv.cplxconj.h rD, rA | <code> rD[15:0 ] = rA[15:0 ] <br> rD[31:16] = -rA[31:16] </code> <br> possibly changed to cv.cplxconj | [ ] | [X] |
+| pv.cplxconj.h | pv.cplxconj.h rD, rA | <code> rD[15:0 ] = rA[15:0 ] <br> rD[31:16] = -rA[31:16] </code> <br> changed to cv.cplxconj | [ ] | [X] |
 
 ## xpulpbr extension
 
