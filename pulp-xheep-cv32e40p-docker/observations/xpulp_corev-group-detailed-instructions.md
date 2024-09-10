@@ -367,7 +367,7 @@ Note: These instructions have similar versions in [risc-v opcodes](https://githu
 | pv.sub.h.div4 | | possibly changed to cv.sub.div2 | [ ] | [ ] |
 | pv.sub.h.div8 | | possibly changed to cv.sub.div2 | [ ] | [ ] |
 
-## xpulpvectshufflek extension
+## xpulpvectshufflepack extension
 
 | Mnemonic | Usage | Description | riscv-opcodes | datasheet |
 |----------|-------|-------------|---------------|-----------|

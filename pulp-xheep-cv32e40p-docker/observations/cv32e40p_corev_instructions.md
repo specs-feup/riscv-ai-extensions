@@ -75,7 +75,7 @@ Description: Can be found [here](https://docs.openhwgroup.org/projects/cv32e40p-
 | cv.start | cv.start L, rs1 | <code> lpstart[L] = rs1 </code> | ?? | [ ] |
 | cv.endi | cv.endi L, uimmL | <code> lpend[L] = PC + (uimmL << 2) </code> | lp.endi| [ ] |
 | cv.end | cv.end L, rs1 | <code> lpend[L] = rs1 </code> | ?? | [ ] |
-| cv.counti | cv.counti L, uimmL | <code> lpcount[L] = uimmL </code> | lp.conti | [ ] |
+| cv.counti | cv.counti L, uimmL | <code> lpcount[L] = uimmL </code> | lp.counti | [ ] |
 | cv.count | cv.count L, rs1 | <code> lpcount[L] = rs1 </code> | lp.count | [ ] |
 | cv.setupi | cv.setupi L, uimmL, uimmS | <code> lpstart[L] = PC + 4 </code> <br> <code> lpend[L] = PC + (uimmS << 2) </code> <br> <code> lpcount[L] = uimmL </code> | lp.setupi | [ ] |
 | cv.setup | cv.setup L, rs1, uimmL | <code> lpstart[L] = PC + 4 </code> <br> <code> lpend[L] = PC + (uimmL << 2) </code> <br> <code> lpcount[L] = rs1 </code> | lp.setup | [ ] |
