@@ -200,7 +200,7 @@ int main() {
     "beq t5, t4, test25\n\t"
     "c.addi t1, 0x1\n\t"
 // tests25-30 test the cv.sdotup.sc.b instruction. values loaded in and compared to are expected output values
-// cv.or.sc.b is of the form "cv.sdotup.sc.b rD, rs1, rs2"
+// cv.sdotup.sc.b is of the form "cv.sdotup.sc.b rD, rs1, rs2"
 "test25:\n\t"
     "li t4, 0x716c4d86\n\t"
     "li t2, 0x723a555c\n\t"
