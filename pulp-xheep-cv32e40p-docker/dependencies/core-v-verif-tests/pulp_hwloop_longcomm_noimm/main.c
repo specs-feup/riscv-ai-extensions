@@ -1,0 +1,65 @@
+#include <stdio.h>
+
+/*
+    Tests the long command, no immediate values format of hwloops
+    (cv.start, cv.end, cv.count) on both channels (0 and 1)
+*/
+int main() {
+    int errors = 0;
+
+    __asm__(
+    "li t0, 0x0\n\t"
+    "li t1, 0x0\n\t"
+    "li t2, 0x0\n\t"
+    "li t3, 0x0\n\t"
+    "li t4, 0x0\n\t"
+    "li t5, 0x0\n\t"
+"simple_loop_noimm_0:\n\t"
+    "li t0, 0\n\t"          // counter to be increased in loop
+    "li t2, 3\n\t"          // loop repeat amount
+    "la t3, start_1\n\t"    // start address of loop
+    "la t4, end_1\n\t"      // end address of loop
+    "li t5, 9\n\t"          // expected result
+    ".balign 4\n\t"         // 4 byte instruction align
+    "cv.start 0, t3\n\t"
+    "cv.end 0, t4\n\t"
+    "cv.count 0, t2\n\t"
+    ".option norvc\n\t"     // disable compressed instructions (required in hwloop body)
+"start_1:\n\t"
+    "add t0, t0, 1\n\t"     // hwloop body must be at least 3 instructions
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+"end_1:\n\t"
+    ".option rvc\n\t"       // enable compressed instructions
+    "beq t0, t5, simple_loop_noimm_1\n\t"
+    "c.addi t1, 0x1\n\t"
+"simple_loop_noimm_1:\n\t"
+    "li t0, 0\n\t"          // counter to be increased in loop
+    "li t2, 3\n\t"          // loop repeat amount
+    "la t3, start_2\n\t"    // start address of loop
+    "la t4, end_2\n\t"      // end address of loop
+    "li t5, 12\n\t"         // expected result
+    ".balign 4\n\t"         // 4 byte instruction align
+    "cv.start 1, t3\n\t"
+    "cv.end 1, t4\n\t"
+    "cv.count 1, t2\n\t"
+    ".option norvc\n\t"
+"start_2:\n\t"
+    "add t0, t0, 2\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+"end_2:\n\t"
+    ".option rvc\n\t"
+    "beq t0, t5, exit_check\n\t"
+    "c.addi t1, 0x1\n\t"
+"exit_check:\n\t"
+    "mv %0, t1\n\t"
+    : "=r" (errors)
+    :
+    : "t0", "t1", "t2", "t3", "t4", "t5"
+    );
+
+    printf("errors = %d\n", errors);
+
+    return 0;
+}
