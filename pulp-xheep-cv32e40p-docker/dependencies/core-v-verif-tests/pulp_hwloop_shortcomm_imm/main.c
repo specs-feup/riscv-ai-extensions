@@ -1,0 +1,165 @@
+#include <stdio.h>
+
+/*
+    Tests the long command, no immediate values format of hwloops
+    (cv.start, cv.end, cv.count) on both channels (0 and 1)
+*/
+int main() {
+    int errors = 0;
+
+    __asm__ volatile(
+    "li t0, 0x0\n\t"
+    "li t1, 0x0\n\t"
+    "li t2, 0x0\n\t"
+    "li t3, 0x0\n\t"
+    "li t4, 0x0\n\t"
+    "li t5, 0x0\n\t"
+"simple_loop_imm_0:\n\t"
+    "li t0, 0\n\t"              // counter to be increased in loop
+    "li t5, 9\n\t"              // expected result
+    ".balign 4\n\t"             // 4 byte instruction align
+    "cv.setupi 0, 3, end_1\n\t"
+    ".option norvc\n\t"         // disable compressed instructions (required in hwloop body)
+"start_1:\n\t"
+    "add t0, t0, 1\n\t"         // hwloop body must be at least 3 instructions
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+"end_1:\n\t"
+    ".option rvc\n\t"           // enable compressed instructions
+    "beq t0, t5, simple_loop_imm_1\n\t"
+    "c.addi t1, 0x1\n\t"
+"simple_loop_imm_1:\n\t"
+    "li t0, 0\n\t"              // counter to be increased in loop
+    "li t5, 16\n\t"             // expected result
+    ".balign 4\n\t"             // 4 byte instruction align
+    "cv.setupi 1, 4, end_2\n\t"
+    ".option norvc\n\t"
+"start_2:\n\t"
+    "add t0, t0, 2\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+"end_2:\n\t"
+    ".option rvc\n\t"
+    "beq t0, t5, long_loop_imm_0\n\t"
+    "c.addi t1, 0x1\n\t"
+"long_loop_imm_0:\n\t"          // maximum number of instructions inside the loop body is 30
+    "li t0, 0\n\t"              // counter to be increased in loop
+    "li t5, 308\n\t"            // expected result
+    ".balign 4\n\t"
+    "cv.setupi 0, 3, end_3\n\t"
+    ".option norvc\n\t"
+"start_3:\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "sll t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+"end_3:\n\t"
+    ".option rvc\n\t"
+    "beq t0, t5, long_loop_imm_1\n\t"
+    "c.addi t1, 0x1\n\t"
+"long_loop_imm_1:\n\t"
+    "li t0, 0\n\t"              // counter to be increased in loop
+    "li t5, 870\n\t"           // expected result
+    ".balign 4\n\t"
+    "cv.setupi 1, 4, end_4\n\t"
+    ".option norvc\n\t"
+"start_4:\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 1\n\t"
+    "sll t0, t0, 1\n\t"
+"end_4:\n\t"
+    ".option rvc\n\t"
+    "beq t0, t5, big_count_0\n\t"
+    "c.addi t1, 0x1\n\t"
+"big_count_0:\n\t"
+    "li t0, 0\n\t"                  // counter to be increased in loop
+    "li t5, 24570\n\t"              // expected result
+    ".balign 4\n\t"                 // 4 byte instruction align
+    "cv.setupi 0, 4095, end_5\n\t"  // maximum allowed in encoding
+    ".option norvc\n\t"
+"start_5:\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 2\n\t"
+    "add t0, t0, 3\n\t"
+"end_5:\n\t"
+    ".option rvc\n\t"
+    "beq t0, t5, big_count_1\n\t"
+    "c.addi t1, 0x1\n\t"
+"big_count_1:\n\t"
+    "li t0, 0\n\t"                  // counter to be increased in loop
+    "li t5, 28665\n\t"              // expected result
+    ".balign 4\n\t"                 // 4 byte instruction align
+    "cv.setupi 1, 4095, end_6\n\t"
+    ".option norvc\n\t"
+"start_6:\n\t"
+    "add t0, t0, 1\n\t"
+    "add t0, t0, 2\n\t"
+    "add t0, t0, 4\n\t"
+"end_6:\n\t"
+    ".option rvc\n\t"
+    "beq t0, t5, exit_check\n\t"
+    "c.addi t1, 0x1\n\t"
+"exit_check:\n\t"
+    "mv %0, t1\n\t"
+    : "=r" (errors)
+    :
+    : "t0", "t1", "t2", "t3", "t4", "t5"
+    );
+
+    printf("errors = %d\n", errors);
+
+    return 0;
+}
