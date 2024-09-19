@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1.7-labs
+
 FROM ubuntu:noble-20240605
 
 RUN apt-get update -y && apt-get upgrade -y && apt-get install -y curl wget git lcov libelf1 libelf-dev libftdi1-2 libftdi1-dev libncurses5-dev libssl-dev libudev-dev libusb-1.0-0 lsb-release texinfo autoconf cmake flex bison libexpat-dev gawk tree xterm python3-venv python3-dev bzip2 bc automake autotools-dev libmpc-dev libmpfr-dev libgmp-dev build-essential bison gperf libtool patchutils zlib1g-dev
@@ -55,6 +57,15 @@ COPY ./dependencies/test.c /workspace/x-heep/sw/applications/pulp_instruction/ma
 RUN ["/bin/bash", "-c", "source /workspace/x-heep/.venv/bin/activate && make mcu-gen CPU=cv32e40p && make verilator-sim FUSESOC_PARAM='--COREV_PULP=1 --FPU=1'"]
 RUN ["/bin/bash", "-c", "source /workspace/x-heep/.venv/bin/activate && make app PROJECT='pulp_instruction' ARCH='rv32imfc_xcvalu_xcvbi_xcvbitmanip_xcvelw_xcvhwlp_xcvmac_xcvmem_xcvsimd_zicsr' COMPILER_PREFIX='riscv32-corev-'"]
 RUN ["/bin/bash", "-c", "source /workspace/x-heep/.venv/bin/activate && cd /workspace/x-heep/build/openhwgroup.org_systems_core-v-mini-mcu_0/sim-verilator && ./Vtestharness +firmware=../../../sw/build/main.hex && cat uart0.log"]
+
+# Copy tests and utilities into x-heep directory
+
+COPY --chmod=777 ./dependencies/run_test.sh /workspace/x-heep/
+COPY --chmod=777 ./dependencies/run_pulp_tests.sh /workspace/x-heep/
+
+COPY --parents dependencies/core-v-verif-tests/* /tmp/
+RUN cp -r /tmp/dependencies/core-v-verif-tests/* /workspace/x-heep/sw/applications/
+RUN ls -1 /tmp/dependencies/core-v-verif-tests/ > pulp_tests.txt
 
 ## automatically source venv when getting into the container via bash
 RUN echo "source /workspace/x-heep/.venv/bin/activate" >> /root/.bashrc
