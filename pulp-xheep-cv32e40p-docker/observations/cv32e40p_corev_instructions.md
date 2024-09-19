@@ -68,17 +68,18 @@ Description: Can be found [here](https://docs.openhwgroup.org/projects/cv32e40p-
 ## Hardware Loops
 
 Description: Can be found [here](https://docs.openhwgroup.org/projects/cv32e40p-user-manual/en/latest/instruction_set_extensions.html#hardware-loops).
+Note: The start and end addresses accept flags. For example, `cv.starti 0, loop_start`.
 
 | Mnemonic | Usage | Description | Pulp equivalent | Tested |
 |----------|-------|-------------|-----------------|:------:|
-| cv.starti | cv.starti L, uimmL | <code> lpstart[L] = PC + (uimmL << 2) </code> | lp.starti | [ ] |
-| cv.start | cv.start L, rs1 | <code> lpstart[L] = rs1 </code> | ?? | [ ] |
-| cv.endi | cv.endi L, uimmL | <code> lpend[L] = PC + (uimmL << 2) </code> | lp.endi| [ ] |
-| cv.end | cv.end L, rs1 | <code> lpend[L] = rs1 </code> | ?? | [ ] |
-| cv.counti | cv.counti L, uimmL | <code> lpcount[L] = uimmL </code> | lp.counti | [ ] |
-| cv.count | cv.count L, rs1 | <code> lpcount[L] = rs1 </code> | lp.count | [ ] |
-| cv.setupi | cv.setupi L, uimmL, uimmS | <code> lpstart[L] = PC + 4 </code> <br> <code> lpend[L] = PC + (uimmS << 2) </code> <br> <code> lpcount[L] = uimmL </code> | lp.setupi | [ ] |
-| cv.setup | cv.setup L, rs1, uimmL | <code> lpstart[L] = PC + 4 </code> <br> <code> lpend[L] = PC + (uimmL << 2) </code> <br> <code> lpcount[L] = rs1 </code> | lp.setup | [ ] |
+| cv.starti | cv.starti L, uimmL | <code> lpstart[L] = PC + (uimmL << 2) </code> | lp.starti | [X] |
+| cv.start | cv.start L, rs1 | <code> lpstart[L] = rs1 </code> | ?? | [X] |
+| cv.endi | cv.endi L, uimmL | <code> lpend[L] = PC + (uimmL << 2) </code> | lp.endi| [X] |
+| cv.end | cv.end L, rs1 | <code> lpend[L] = rs1 </code> | ?? | [X] |
+| cv.counti | cv.counti L, uimmL | <code> lpcount[L] = uimmL </code> | lp.counti | [X] |
+| cv.count | cv.count L, rs1 | <code> lpcount[L] = rs1 </code> | lp.count | [X] |
+| cv.setupi | cv.setupi L, uimmL, uimmS | <code> lpstart[L] = PC + 4 </code> <br> <code> lpend[L] = PC + (uimmS << 2) </code> <br> <code> lpcount[L] = uimmL </code> | lp.setupi | [X] |
+| cv.setup | cv.setup L, rs1, uimmL | <code> lpstart[L] = PC + 4 </code> <br> <code> lpend[L] = PC + (uimmL << 2) </code> <br> <code> lpcount[L] = rs1 </code> | lp.setup | [X] |
 
 ## ALU
 
