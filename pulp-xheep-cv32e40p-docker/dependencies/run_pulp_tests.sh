@@ -51,6 +51,8 @@ do
 
     start_time=$(date +%s)
 
+    early_skip=0
+
     while kill -0 $simulation_pid 2>/dev/null; do
         current_time=$(date +%s)
         elapsed=$((current_time - start_time))
@@ -60,12 +62,18 @@ do
             echo -e "\n   ${RED}Simulation exceeded the time limit!${RESET}"
             cleanup
             cd ../../..
-            continue
+            early_skip=1
+            break
         fi
 
         sleep 1
     done
+
     echo ""
+
+    if [ $early_skip -eq 1 ]; then
+        continue
+    fi
 
     trap - SIGINT
 
